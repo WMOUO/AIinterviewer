@@ -1,15 +1,10 @@
 <template>
   <div>
-    <h1>Index Page</h1>
-    <button @click="huh(test)" />
-    <TestCamera />
+    <n-button type="info">
+      Info
+    </n-button>
   </div>
 </template>
 
 <script lang="js" setup>
-  const test = "Hello World"
-
-  const huh = a => {
-    console.log(a)
-  }
 </script>

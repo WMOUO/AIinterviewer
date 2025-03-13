@@ -32,5 +32,8 @@ export default defineNuxtConfig({
         resolvers: [NaiveUiResolver()]
       })
     ]
+  },
+  runtimeConfig: {
+    mongoUri: process.env.MONGODB_URI
   }
 })

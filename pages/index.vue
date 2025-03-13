@@ -1,10 +1,5 @@
 <template>
   <div>
-    <n-button type="info">
-      Info
-    </n-button>
+    Index
   </div>
 </template>
-
-<script lang="js" setup>
-</script>

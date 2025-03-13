@@ -5,9 +5,9 @@ import User from '~/server/models/User';
 export default defineEventHandler(async (event) => {
     try {
     const body = await readBody(event);
-
+    console.log(body)
     // 確保所有欄位都有提供
-    if (!body.username || !body.password || !body.birthday || !body.email) {
+    if (!body.username || !body.password || !body.email) {
         return { success: false, message: '缺少必要欄位' };
     }
 
@@ -24,7 +24,6 @@ export default defineEventHandler(async (event) => {
     const newUser = new User({
         username: body.username,
         password: hashedPassword,
-        birthday: new Date(body.birthday),
         email: body.email,
     });
     

@@ -1,13 +1,11 @@
 <script setup>
     import { ref } from 'vue';
-    import { useRouter } from 'vue-router';
 
-    const router = useRouter();
-
+    const { auth } = useSupabaseClient();
     // 用來儲存使用者輸入的 Email 和 密碼
     const form = ref({
-    email: '',
-    password: ''
+        email: '',
+        password: ''
     });
 
     // 登入狀態
@@ -19,19 +17,15 @@
         loginStatus.value = null;
         loading.value = true;
         try {
-            const response = await $fetch('/api/user/login', {
-                method: 'POST',
-                body: form.value
+            const { error } = await auth.signInWithPassword({
+                email: form.value.email,
+                password: form.value.password
             });
-            if (response.success) {
-                loginStatus.value = { type: 'success', message: '登入成功！' };
-                router.push('/');
-            } else {
-                loginStatus.value = { type: 'error', message: response.message };
+            if (error) {
+                console.log(error)
+            }else{
+                navigateTo('/', )
             }
-        } catch (error) {
-            console.error(error);
-            loginStatus.value = { type: 'error', message: '伺服器錯誤，請稍後再試' };
         } finally {
             loading.value = false;
         }

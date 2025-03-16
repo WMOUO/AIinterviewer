@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   // }
   devtools: { enabled: true },
   css: ['~/assets/main.css'],
-  modules: ["nuxtjs-naive-ui"],
+  modules: ['@nuxtjs/supabase',"nuxtjs-naive-ui"],
   vite: {
     plugins: [
       tailwindcss(),
@@ -34,6 +34,15 @@ export default defineNuxtConfig({
         resolvers: [NaiveUiResolver()]
       })
     ]
+  },
+  supabase: {
+    redirect: false,
+    clientOptions: {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true
+      }
+    }
   },
   runtimeConfig: {
     mongoUri: process.env.MONGODB_URI

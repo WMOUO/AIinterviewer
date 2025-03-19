@@ -10,7 +10,6 @@
     tableData.value = data
     console.log(data)
   }
-  const tableColumn = ref([{ title: "number", key: "number"}])
 
   onMounted (() => {
     getData()
@@ -18,7 +17,8 @@
 </script>
 <template>
   <div>
-    Index
-    <n-data-table :data="tableData" :columns="tableColumn"/>
+    <DataTable :value="tableData" class="min-width: 50rem">
+        <Column field="number" header="Code"/>
+    </DataTable>
   </div>
 </template>

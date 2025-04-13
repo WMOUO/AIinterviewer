@@ -41,27 +41,27 @@
         {{ loginStatus.message }}
         </div>
 
-        <form @submit.prevent="loginUser">
+        <Form @submit.prevent="loginUser">
         <div class="mb-4">
-            <label class="block text-gray-700">電子郵件</label>
-            <input v-model="form.email" type="email" required class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <InputText v-model="form.email" type="email" placeholder="電子郵件" required class="w-full px-4 py-2"/>
         </div>
 
         <div class="mb-4">
             <label class="block text-gray-700">密碼</label>
-            <input v-model="form.password" type="password" required class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <InputText v-model="form.password" type="password" required class="w-full px-4 py-2"/>
         </div>
 
-        <button type="submit" :disabled="loading"  class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50">
+        <Button type="submit" :disabled="loading"  class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50">
             {{ loading ? '登入中...' : '登入' }}
-        </button>
-        </form>
+        </Button>
+        </Form>
 
         <p class="mt-4 text-center text-gray-600">
         還沒有帳號？ 
         <NuxtLink to="/register" class="text-blue-600 hover:underline">立即註冊</NuxtLink>
         </p>
     </div>
+    <InputText name="username" type="text" placeholder="Username" />
     </div>
 </template>
 

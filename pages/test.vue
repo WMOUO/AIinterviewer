@@ -34,6 +34,10 @@
   import PartAImage from '~/assets/images/partA.png'
   import PartAVideo from '~/assets/video/partA.mp4'
   import Reciprocal10 from '~/assets/video/reciprocal10.mp4'
+  import PartAtest from '~/assets/video/PartAtest.mp4'
+  import Reciprocal60 from '~/assets/video/Reciprocal60.mp4'
+  import readyai from '~/assets/video/readyai.mp4'
+  import readyvideo from '~/assets/video/readyvideo.mp4'
 
   const toast = useToast();
   const video = ref<HTMLVideoElement | null>(null)
@@ -43,8 +47,8 @@
   const interviewerFlow = ref(0)
 
   const imgList = ref([IntroduceImage,Introduce2Image,PartAImage])
-  const videoList = ref([PartAVideo])
-  const interviewerList = ref([IntroduceInterviewer,IntroduceRule,Reciprocal10])
+  const videoList = ref([PartAVideo,readyvideo,PartAtest])
+  const interviewerList = ref([IntroduceInterviewer,IntroduceRule,Reciprocal10,readyai,Reciprocal60])
 
   const imgSwitchVideo = ref(false)
 
@@ -62,8 +66,14 @@
           videoFlow.value ++
         } else if (interviewerFlow.value === 2){
           // 測驗測試結束換準備正式測驗
-          imgSwitchVideo.value = false
-          imgFlow.value ++
+          interviewerFlow.value ++
+          imgSwitchVideo.value = true
+          videoFlow.value ++
+        }else if (interviewerFlow.value === 3){
+          // 測驗正式開始
+          interviewerFlow.value ++
+          imgSwitchVideo.value = true
+          videoFlow.value ++
         }
       })
     }

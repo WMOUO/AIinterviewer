@@ -36,8 +36,16 @@
   import Reciprocal10 from '~/assets/video/reciprocal10.mp4'
   import PartAtest from '~/assets/video/PartAtest.mp4'
   import Reciprocal60 from '~/assets/video/Reciprocal60.mp4'
-  import readyai from '~/assets/video/readyai.mp4'
+  import AIpartready from '~/assets/video/AIpartready.mp4'
   import readyvideo from '~/assets/video/readyvideo.mp4'
+  import PartBready from '~/assets/video/PartBready.mp4'
+  import AIPartB1 from '~/assets/video/AIPartB1.mp4'
+  import AIPartC1 from '~/assets/video/AIPartC1.mp4'
+  import PartB from '~/assets/video/PartB.mp4'
+  import PartBtest from '~/assets/video/PartBtest.mp4'
+  import PartCready from '~/assets/video/PartCready.mp4'
+  import PartC from '~/assets/video/PartC.mp4'
+  import PartCtest from '~/assets/video/PartCtest.mp4'
 
   const toast = useToast();
   const video = ref<HTMLVideoElement | null>(null)
@@ -47,8 +55,8 @@
   const interviewerFlow = ref(0)
 
   const imgList = ref([IntroduceImage,Introduce2Image,PartAImage])
-  const videoList = ref([PartAVideo,readyvideo,PartAtest])
-  const interviewerList = ref([IntroduceInterviewer,IntroduceRule,Reciprocal10,readyai,Reciprocal60])
+  const videoList = ref([PartAVideo,readyvideo,PartAtest,PartBready,PartB,readyvideo,PartBtest,PartCready,PartC,readyvideo,PartCtest])
+  const interviewerList = ref([IntroduceInterviewer,IntroduceRule,Reciprocal10,AIpartready,Reciprocal60,AIPartB1,Reciprocal10,AIpartready,Reciprocal60,AIPartC1,Reciprocal10,AIpartready,Reciprocal60])
 
   const imgSwitchVideo = ref(false)
 
@@ -69,10 +77,46 @@
           interviewerFlow.value ++
           imgSwitchVideo.value = true
           videoFlow.value ++
-        }else if (interviewerFlow.value === 3){
+        } else if (interviewerFlow.value === 3){
           // 測驗正式開始
           interviewerFlow.value ++
           imgSwitchVideo.value = true
+          videoFlow.value ++
+        } else if (interviewerFlow.value === 4){
+          // PartB規則
+          interviewerFlow.value ++
+          videoFlow.value ++
+        } else if (interviewerFlow.value === 5){
+          // PartB測驗測試
+          interviewerFlow.value ++
+          videoFlow.value ++
+        } else if (interviewerFlow.value === 6){
+          // PartB測驗測試結束換準備正式測驗
+          interviewerFlow.value ++
+          videoFlow.value ++
+        } else if (interviewerFlow.value === 7){
+          // 測驗正式開始
+          interviewerFlow.value ++
+          videoFlow.value ++
+        } else if (interviewerFlow.value === 8){
+          // 測驗正式開始
+          interviewerFlow.value ++
+          videoFlow.value ++
+        } else if (interviewerFlow.value === 9){
+          // 測驗正式開始
+          interviewerFlow.value ++
+          videoFlow.value ++
+        } else if (interviewerFlow.value === 10){
+          // 測驗正式開始
+          interviewerFlow.value ++
+          videoFlow.value ++
+        } else if (interviewerFlow.value === 11){
+          // 測驗正式開始
+          interviewerFlow.value ++
+          videoFlow.value ++
+        } else if (interviewerFlow.value === 12){
+          // 測驗正式開始
+          interviewerFlow.value ++
           videoFlow.value ++
         }
       })

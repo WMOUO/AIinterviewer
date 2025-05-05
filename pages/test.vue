@@ -9,15 +9,16 @@
     <!-- 右邊區域 -->
     <div class="flex flex-col w-[50%] h-screen">
 
-      <!-- 右上區域 -->
+      <!-- 右上區域AI -->
       <div class="bg-[#d4e2ff] p-2 h-[50%] item-center justify-center overflow-hidden">
         <video ref="interviewerVideo" :src="`${interviewerList[interviewerFlow]}`" autoplay class="w-full" />
       </div>
 
-      <!-- 右下區域 -->
+      <!-- 右下區域攝影機 -->
       <div class="bg-[#ffefdb] p-2">
-        
-        <video ref="video" autoplay playsinline class="w-full h-full transform scale-x-[-1]" />
+        <client-only>
+        <FaceDetector />
+        </client-only>
       </div>
     </div>
     
@@ -46,8 +47,8 @@
   import PartCready from '~/assets/video/PartCready.mp4'
   import PartC from '~/assets/video/PartC.mp4'
   import PartCtest from '~/assets/video/PartCtest.mp4'
+  import FaceDetector from '~/face/FaceDetector.vue'
 
-  const toast = useToast();
   const video = ref<HTMLVideoElement | null>(null)
   const interviewerVideo = ref<HTMLVideoElement | null>(null)
   const imgFlow = ref(0)
@@ -99,15 +100,15 @@
           interviewerFlow.value ++
           videoFlow.value ++
         } else if (interviewerFlow.value === 8){
-          // 測驗正式開始
+          // PartC規則
           interviewerFlow.value ++
           videoFlow.value ++
         } else if (interviewerFlow.value === 9){
-          // 測驗正式開始
+          // PartC測驗測試
           interviewerFlow.value ++
           videoFlow.value ++
         } else if (interviewerFlow.value === 10){
-          // 測驗正式開始
+          // PartC測驗測試結束換準備正式測驗
           interviewerFlow.value ++
           videoFlow.value ++
         } else if (interviewerFlow.value === 11){
@@ -121,21 +122,7 @@
         }
       })
     }
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-        if(video.value !== null) {
-          video.value.srcObject = stream
-        }
-        toast.removeGroup('camera')
-    } catch (err) {
-        console.error('無法取得攝影機：', err)
-        toast.add({
-          severity: 'success',
-          summary: '登入成功',
-          detail: '歡迎回來！',
-          life: 999999,
-          group: 'cameraNotPrepare'
-        });
-    }
-  })
+
+})
+
 </script>

@@ -16,13 +16,15 @@
     "@primeuix/themes": "^1.0.0",
     "@primevue/forms": "^4.3.2",
     "@tailwindcss/vite": "^4.0.13",
+    "@tensorflow-models/blazeface": "^0.1.0",
+    "@tensorflow/tfjs": "^4.22.0",
     "nuxt": "^3.15.2",
     "primeicons": "^7.0.0",
     "primevue": "^4.3.2",
     "tailwindcss": "^4.0.13",
     "tailwindcss-primeui": "^0.5.1",
-    "vue": "latest",
-    "vue-router": "latest"
+    "vue": "^3.5.13",
+    "whatwg-url": "^14.2.0"
   },
   "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab",
   "devDependencies": {

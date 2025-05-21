@@ -47,7 +47,7 @@
   import PartCready from '~/assets/video/PartCready.mp4'
   import PartC from '~/assets/video/PartC.mp4'
   import PartCtest from '~/assets/video/PartCtest.mp4'
-  import FaceDetector from '~/face/FaceDetector.vue'
+  import FaceDetector from '/components/FaceDetector.vue'
 
   const video = ref<HTMLVideoElement | null>(null)
   const interviewerVideo = ref<HTMLVideoElement | null>(null)

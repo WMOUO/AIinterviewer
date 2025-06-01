@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-  import { useToast } from 'primevue/usetoast';
+  //import { useToast } from 'primevue/usetoast';
 
   import IntroduceImage from '~/assets/images/introduce.png'
   import Introduce2Image from '~/assets/images/introduce2.png'
@@ -47,9 +47,10 @@
   import PartCready from '~/assets/video/PartCready.mp4'
   import PartC from '~/assets/video/PartC.mp4'
   import PartCtest from '~/assets/video/PartCtest.mp4'
-  import FaceDetector from '/components/FaceDetector.vue'
+  import FaceDetector from '~/components/FaceDetector.vue'
+  import { peopleCount } from '@/utils/shared'
 
-  const video = ref<HTMLVideoElement | null>(null)
+  //const video = ref<HTMLVideoElement | null>(null)
   const interviewerVideo = ref<HTMLVideoElement | null>(null)
   const imgFlow = ref(0)
   const videoFlow = ref(-1)
@@ -65,6 +66,7 @@
     if (interviewerVideo.value) {
       interviewerVideo.value.addEventListener('ended', () => {
         if (interviewerFlow.value === 0) {
+          
           // interviewer介紹完換介紹測驗規則
           interviewerFlow.value ++
           imgFlow.value ++
@@ -122,7 +124,11 @@
         }
       })
     }
-
+    watch(peopleCount, (newCount) => {
+      if (newCount > 1 && interviewerVideo.value) {
+      interviewerVideo.value.pause()
+    }
 })
 
+})
 </script>

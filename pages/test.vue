@@ -3,7 +3,7 @@
     <!-- 左邊區域 -->
     <div class="w-[90%] flex items-center justify-center bg-[#f4f4f4] p-3">
       <img v-if="!imgSwitchVideo" :src="`${imgList[imgFlow]}`" class="w-full h-auto object-cover">
-      <video v-else :src="`${videoList[videoFlow]}`" autoplay class="w-full h-auto object-cover" />
+      <video ref="testvideo" :src="`${videoList[videoFlow]}`" autoplay class="w-full h-auto object-cover" />
     </div>
 
     <!-- 右邊區域 -->
@@ -17,7 +17,10 @@
       <!-- 右下區域攝影機 -->
       <div class="bg-[#ffefdb] p-2">
         <client-only>
-        <FaceDetector />
+        <FaceDetector
+        v-model:faceCount="faceCount"
+        v-model:videoState="videoState"
+        @terminate="endTest"/>
         </client-only>
       </div>
     </div>
@@ -48,10 +51,11 @@
   import PartC from '~/assets/video/PartC.mp4'
   import PartCtest from '~/assets/video/PartCtest.mp4'
   import FaceDetector from '~/components/FaceDetector.vue'
-  import { peopleCount } from '@/utils/shared'
+  import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
 
-  //const video = ref<HTMLVideoElement | null>(null)
   const interviewerVideo = ref<HTMLVideoElement | null>(null)
+  const testvideo = ref<HTMLVideoElement | null>(null)
   const imgFlow = ref(0)
   const videoFlow = ref(-1)
   const interviewerFlow = ref(0)
@@ -61,6 +65,15 @@
   const interviewerList = ref([IntroduceInterviewer,IntroduceRule,Reciprocal10,AIpartready,Reciprocal60,AIPartB1,Reciprocal10,AIpartready,Reciprocal60,AIPartC1,Reciprocal10,AIpartready,Reciprocal60])
 
   const imgSwitchVideo = ref(false)
+
+
+const faceCount = ref(0)
+const router = useRouter()
+
+const endTest = () => {
+  alert('偵測三次違規，測驗終止')
+  router.push('/endtest')
+}
 
   onMounted(async () => {
     if (interviewerVideo.value) {
@@ -124,11 +137,17 @@
         }
       })
     }
-    watch(peopleCount, (newCount) => {
-      if (newCount > 1 && interviewerVideo.value) {
-      interviewerVideo.value.pause()
-    }
-})
 
+})
+//影片撥放停止
+const videoState = ref<'play' | 'paused'>('play')
+watch(videoState, (state) => {
+  if (state === 'paused') {
+    interviewerVideo.value?.pause()
+    testvideo.value?.pause()
+  } else if (state === 'play') {
+    interviewerVideo.value?.play()
+    testvideo.value?.play()
+  }
 })
 </script>

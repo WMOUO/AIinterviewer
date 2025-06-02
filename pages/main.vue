@@ -16,7 +16,7 @@ const router = useRouter();
 
 // 跳轉到測驗頁面
 const goToTest = () => {
-  router.push('/test');
+  router.push('/exam');
 };
 
 // 跳轉到成績查詢頁面

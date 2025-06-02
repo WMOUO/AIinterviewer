@@ -28,7 +28,7 @@
       <p>該測驗部分已完成</p>
       <template #footer>
         <div class="flex w-full justify-center items-center">
-          <Button type="button" label="繼續" @click="nextRound()" />
+          <Button type="button" :label="dialogButtonLabel" @click="nextRound()" />
         </div>
       </template>
     </Dialog>
@@ -76,6 +76,7 @@
   // partC正式測驗
   import PartCTest from '~/assets/video/partC/PartC_test.mp4'
 
+  // 測驗流程
   const playList = ref([{
       name: 'interviewer',
       content:[
@@ -94,11 +95,11 @@
             next: -1,
           },
         ],
-        next_part: 'part_A',
+        next_part: 'partA',
         next_order: 1
       },
       {
-      name: 'part_A',
+      name: 'partA',
       content: [
           {
             step: 0,
@@ -129,11 +130,11 @@
             next: -1,
           },
         ],
-        next_part: 'part_B',
+        next_part: 'partB',
         next_order: 2
       },
       {
-      name: 'part_B',
+      name: 'partB',
       content: [
           {
             step: 0,
@@ -164,11 +165,11 @@
             next: -1,
           },
         ],
-        next_part: 'part_C',
+        next_part: 'partC',
         next_order: 3
       },
       {
-      name: 'part_C',
+      name: 'partC',
       content: [
           {
             step: 0,
@@ -203,24 +204,99 @@
         next_order: 4
       },
     ]) 
-
+  
+  // 流程控制
   const interviewerVideo = ref<HTMLVideoElement | null>(null)
   const isVideo = ref(false)
   const testvideo = ref<HTMLVideoElement | null>(null)
-  
-  const FinishDialog = ref(false)
 
   // 影片播放控制
-  const flowTopicStep = ref<number>(0) //測試1
-  const flowIndexStep  = ref<number>(0) //測試3
+  const flowTopicStep = ref<number>(0)
+  const flowIndexStep  = ref<number>(0)
   const examVideo = ref<string>(playList.value[flowTopicStep.value].content[flowIndexStep.value].exam_image)
   const introduceVideo = ref<string>(playList.value[flowTopicStep.value].content[flowIndexStep.value].introduce_video)
 
-  const checkRound = async() => {
-    FinishDialog.value = true
-    
+  // 錄音控制
+  const mediaRecorder = ref<MediaRecorder | null>(null)
+  const audioChunks = ref<Blob[]>([])
+  const isRecording = ref(false)
+
+  // 開始錄音
+  const startRecording = async () => {
+    if (isRecording.value) return
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+    const recorder = new MediaRecorder(stream)
+    audioChunks.value = []
+    recorder.ondataavailable = (e) => {
+      audioChunks.value.push(e.data)
+    }
+    recorder.start()
+    mediaRecorder.value = recorder
+    isRecording.value = true
+    console.log('開始錄音')
   }
 
+  // 停止錄音，回傳 Blob
+  const stopRecording = (): Promise<Blob> => {
+    console.log('停止錄音')
+    return new Promise((resolve) => {
+      if (!mediaRecorder.value) return resolve(new Blob())
+      mediaRecorder.value.onstop = () => {
+        const audioBlob = new Blob(audioChunks.value, { type: 'audio/webm' })
+        isRecording.value = false
+        resolve(audioBlob)
+      }
+      mediaRecorder.value.stop()
+    })
+  }
+
+  // call gemini語音轉文字api
+  const uploadAudio = async (audioBlob: Blob, partName: string) => {
+    const formData = new FormData()
+    formData.append('audio', audioBlob, `${partName}.webm`)
+    if (flowTopicStep.value === 1){
+      try {
+        const response = await $fetch('/api/translateLetter', {
+          method: 'POST',
+          body: formData
+        })
+        console.log(`Audio uploaded for ${partName}`)
+        console.log('Gemini 回傳內容：', response.text);
+      } catch (err) {
+        console.error('Upload error', err)
+      }
+    } else if(flowTopicStep.value === 3) {
+      try {
+        const response = await $fetch('/api/translateWord', {
+          method: 'POST',
+          body: formData
+        })
+        console.log(`Audio uploaded for ${partName}`)
+        console.log('Gemini 回傳內容：', response.text);
+      } catch (err) {
+        console.error('Upload error', err)
+      }
+    }
+  }
+
+  // Dialog
+  const FinishDialog = ref(false)
+  const dialogButtonLabel = ref('')
+  
+  const checkRound = async() => {
+    FinishDialog.value = true
+    if (flowTopicStep.value === 3) {
+      dialogButtonLabel.value = '結束測驗'
+    }else {
+      dialogButtonLabel.value = `開始${playList.value[flowTopicStep.value+1].name}`
+    }
+    if (flowTopicStep.value !== 0) {
+      const audioBlob = await stopRecording()
+      await uploadAudio(audioBlob, playList.value[flowTopicStep.value].name)
+    }
+  }
+  
+  // 轉下一個part
   const nextRound = async() => {
     FinishDialog.value= false
     if (flowTopicStep.value === playList.value.length - 1) {
@@ -231,9 +307,11 @@
     flowIndexStep.value = 0
     playVideo()
   }
-
+  
+  // 播放影片
   const playVideo = () => {
     const index = playList.value[flowTopicStep.value].content[flowIndexStep.value]
+    // 判斷是影片還是相片
     if ( index.exam_image !== '') {
       isVideo.value = false
       examVideo.value = index.exam_image
@@ -247,11 +325,7 @@
 
   const controlVideo = async() => {
     if ( playList.value[flowTopicStep.value].content[flowIndexStep.value].next === -1 ) {
-      if (flowTopicStep.value === 0) {
-        await nextRound()
-      }else{
-        checkRound()
-      }
+      checkRound()
     } else {
       flowIndexStep.value += 1
     }
@@ -272,15 +346,22 @@
       interviewerVideo.value.addEventListener('ended',controlVideo)
     }
   })
-//影片撥放停止
-const videoState = ref<'play' | 'paused'>('play')
-watch(videoState, (state) => {
-  if (state === 'paused') {
-    interviewerVideo.value?.pause()
-    testvideo.value?.pause()
-  } else if (state === 'play') {
-    interviewerVideo.value?.play()
-    testvideo.value?.play()
-  }
-})
+
+  //影片撥放停止
+  const videoState = ref<'play' | 'paused'>('play')
+  watch(videoState, (state) => {
+    if (state === 'paused') {
+      interviewerVideo.value?.pause()
+      testvideo.value?.pause()
+    } else if (state === 'play') {
+      interviewerVideo.value?.play()
+      testvideo.value?.play()
+    }
+  })
+
+  watch(flowIndexStep, async(oldVal,newVal) => {
+    if (flowIndexStep.value === 3) {
+      await startRecording()
+    }
+  })
 </script>

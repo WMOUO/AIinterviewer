@@ -44,5 +44,8 @@ export default defineNuxtConfig({
     classSuffix: '',
     storage: 'localStorage', // or 'sessionStorage' or 'cookie'
     storageKey: 'nuxt-color-mode'
+  },
+  runtimeConfig: {
+    geminiApiKey: process.env.GEMINI_API_KEY,
   }
 })

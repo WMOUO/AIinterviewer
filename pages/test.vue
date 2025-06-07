@@ -3,21 +3,25 @@
     <!-- 左邊區域 -->
     <div class="w-[90%] flex items-center justify-center bg-[#f4f4f4] p-3">
       <img v-if="!imgSwitchVideo" :src="`${imgList[imgFlow]}`" class="w-full h-auto object-cover">
-      <video v-else :src="`${videoList[videoFlow]}`" autoplay class="w-full h-auto object-cover" />
+      <video ref="testvideo" :src="`${videoList[videoFlow]}`" autoplay class="w-full h-auto object-cover" />
     </div>
 
     <!-- 右邊區域 -->
     <div class="flex flex-col w-[50%] h-screen">
 
-      <!-- 右上區域 -->
+      <!-- 右上區域AI -->
       <div class="bg-[#d4e2ff] p-2 h-[50%] item-center justify-center overflow-hidden">
         <video ref="interviewerVideo" :src="`${interviewerList[interviewerFlow]}`" autoplay class="w-full" />
       </div>
 
-      <!-- 右下區域 -->
+      <!-- 右下區域攝影機 -->
       <div class="bg-[#ffefdb] p-2">
-        
-        <video ref="video" autoplay playsinline class="w-full h-full transform scale-x-[-1]" />
+        <client-only>
+        <FaceDetector
+        v-model:faceCount="faceCount"
+        v-model:videoState="videoState"
+        @terminate="endTest"/>
+        </client-only>
       </div>
     </div>
     
@@ -25,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-  import { useToast } from 'primevue/usetoast';
+  //import { useToast } from 'primevue/usetoast';
 
   import IntroduceImage from '~/assets/images/introduce.png'
   import Introduce2Image from '~/assets/images/introduce2.png'
@@ -46,10 +50,12 @@
   import PartCready from '~/assets/video/PartCready.mp4'
   import PartC from '~/assets/video/PartC.mp4'
   import PartCtest from '~/assets/video/PartCtest.mp4'
+  import FaceDetector from '~/components/FaceDetector.vue'
+  import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
 
-  const toast = useToast();
-  const video = ref<HTMLVideoElement | null>(null)
   const interviewerVideo = ref<HTMLVideoElement | null>(null)
+  const testvideo = ref<HTMLVideoElement | null>(null)
   const imgFlow = ref(0)
   const videoFlow = ref(-1)
   const interviewerFlow = ref(0)
@@ -60,10 +66,20 @@
 
   const imgSwitchVideo = ref(false)
 
+
+const faceCount = ref(0)
+const router = useRouter()
+
+const endTest = () => {
+  alert('偵測三次違規，測驗終止')
+  router.push('/endtest')
+}
+
   onMounted(async () => {
     if (interviewerVideo.value) {
       interviewerVideo.value.addEventListener('ended', () => {
         if (interviewerFlow.value === 0) {
+          
           // interviewer介紹完換介紹測驗規則
           interviewerFlow.value ++
           imgFlow.value ++
@@ -99,15 +115,15 @@
           interviewerFlow.value ++
           videoFlow.value ++
         } else if (interviewerFlow.value === 8){
-          // 測驗正式開始
+          // PartC規則
           interviewerFlow.value ++
           videoFlow.value ++
         } else if (interviewerFlow.value === 9){
-          // 測驗正式開始
+          // PartC測驗測試
           interviewerFlow.value ++
           videoFlow.value ++
         } else if (interviewerFlow.value === 10){
-          // 測驗正式開始
+          // PartC測驗測試結束換準備正式測驗
           interviewerFlow.value ++
           videoFlow.value ++
         } else if (interviewerFlow.value === 11){
@@ -121,21 +137,17 @@
         }
       })
     }
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-        if(video.value !== null) {
-          video.value.srcObject = stream
-        }
-        toast.removeGroup('camera')
-    } catch (err) {
-        console.error('無法取得攝影機：', err)
-        toast.add({
-          severity: 'success',
-          summary: '登入成功',
-          detail: '歡迎回來！',
-          life: 999999,
-          group: 'cameraNotPrepare'
-        });
-    }
-  })
+
+})
+//影片撥放停止
+const videoState = ref<'play' | 'paused'>('play')
+watch(videoState, (state) => {
+  if (state === 'paused') {
+    interviewerVideo.value?.pause()
+    testvideo.value?.pause()
+  } else if (state === 'play') {
+    interviewerVideo.value?.play()
+    testvideo.value?.play()
+  }
+})
 </script>

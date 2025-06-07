@@ -1,13 +1,13 @@
 <template>
   <div class="relative">
-    <video ref="video" autoplay playsinline class="w-full h-full transform scale-x-[-1]" v-show="!stop" />
-    <canvas ref="canvas" class="absolute top-0 left-0 w-full h-full" v-show="stop" />
+    <video v-show="!stop" ref="video" autoplay playsinline class="w-full h-full transform scale-x-[-1]"/>
+    <canvas v-show="stop" ref="canvas"  class="absolute top-0 left-0 w-full h-full" />
     
     <Dialog 
       v-model:visible="visible"
       :closable="false"
-      :dismissableMask="false"
-      :closeOnEscape="false"
+      :dismissable-mask="false"
+      :close-on-escape="false"
       header="警告" :style="{ width: '25rem', height: '11rem' }">
       <p class="text-center">
         {{ warningCount < 2 ? `出現一人以上，警告3次將終止測驗，目前 ${warningCount+1} 次` : '警告3次，測驗即將終止' }}
@@ -52,6 +52,8 @@ onMounted(async () => {
 
     const blazeface = await import('@tensorflow-models/blazeface')
     const tf = await import('@tensorflow/tfjs')
+    await tf.setBackend('webgl')  // 如果想用 CPU 可以改成 'cpu'
+    await tf.ready()
     const modelInstance = await blazeface.load()
 
     await new Promise((resolve) => {

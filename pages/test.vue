@@ -52,6 +52,7 @@
   // partA介紹
   import IntroducePartA from '~/assets/video/partA/partA_introduce.mp4'
   import ReadyPartA from '~/assets/video/partA/partA_ready.mp4'
+  import PartAImg from '~/assets/video/partA/partA.jpg'
   // partA前測
   import PretestPartA from '~/assets/video/partA/PartA_pretest.mp4'
   // partA正式測驗
@@ -60,17 +61,19 @@
   // partB介紹
   import IntroducePartB from '~/assets/video/partB/partB_introduce.mp4'
   import ReadyPartB from '~/assets/video/partB/partB_ready.mp4'
+  import PartBImg from '~/assets/video/partB/partB.jpg'
   // partB前測
   import PretestPartB from '~/assets/video/partB/PartB_pretest.mp4'
   // partB正式測驗
   import PartBTest from '~/assets/video/partB/PartB_test.mp4'
 
-  // partB介紹
+  // partC介紹
   import IntroducePartC from '~/assets/video/partC/partC_introduce.mp4'
   import ReadyPartC from '~/assets/video/partC/partC_ready.mp4'
-  // partB前測
+  import PartCImg from '~/assets/video/partC/partC.jpg'
+  // partC前測
   import PretestPartC from '~/assets/video/partC/PartC_pretest.mp4'
-  // partB正式測驗
+  // partC正式測驗
   import PartCTest from '~/assets/video/partC/PartC_test.mp4'
 
   const playList = ref([{
@@ -113,8 +116,8 @@
           },
           {
             step: 2,
-            exam_image: '',
-            exam_video:IntroducePartA, // 待修改
+            exam_image: PartAImg,
+            exam_video: '', // 待修改
             introduce_video:TestIntroduce,
             next: 3,
           },
@@ -148,8 +151,8 @@
           },
           {
             step: 2,
-            exam_image: '',
-            exam_video:IntroducePartB,
+            exam_image: PartBImg,
+            exam_video: '',
             introduce_video:TestIntroduce,
             next: 3,
           },
@@ -183,8 +186,8 @@
           },
           {
             step: 2,
-            exam_image: '',
-            exam_video:IntroducePartC,
+            exam_image: PartCImg,
+            exam_video:'',
             introduce_video:TestIntroduce,
             next: 3,
           },
@@ -238,6 +241,7 @@
       isVideo.value = true
       examVideo.value = index.exam_video
     }
+    console.log(index.exam_image)
     introduceVideo.value = index.introduce_video
   }
 

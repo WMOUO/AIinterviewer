@@ -18,6 +18,7 @@
     "@tailwindcss/vite": "^4.0.13",
     "@tensorflow-models/blazeface": "^0.1.0",
     "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-backend-webgl": "^4.22.0",
     "nuxt": "^3.15.2",
     "primeicons": "^7.0.0",
     "primevue": "^4.3.2",

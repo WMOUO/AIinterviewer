@@ -250,6 +250,38 @@
     })
   }
 
+  // A跟C評分
+  const scoreStore = useScoreStore()
+  const checkAns = (studentAns:string) => {
+    const partAAnswers = ['t', 'u', 'a', 'g', 'j', 'p', 'c', 'w', 'm', 'f', 'i', 'x', 'v', 'r', 'e', 'h', 'm', 'o', 'l', 'y', 'q', 'd', 's', 'b', 'z', 'n', 'v', 'f', 'q', 'i']
+    const partCAnswers = ['why', 'hot', 'black', 'rounter', 'left', 'chat', 'food', 'paper', 'cos', 'appear', 'and', 'egg', 'have', 'rain', 'by', 'vote', 'is', 'late', 'under', 'focus', 'next', 'because', 'equity', 'stock', 'case', 'of', 'profit', 'file', 'tablet', 'agent']
+    const studentAnswers = studentAns
+      .split('\n')
+      .map((ans:string) => ans.trim())
+      .filter((ans:string) => ans !== '')
+    let score = 0
+    if (flowTopicStep.value === 1) {
+      for (let i = 0; i < studentAnswers.length; i++) {
+        if (studentAnswers[i] === partAAnswers[i]) {
+          score++
+        }
+      }
+      scoreStore.setScore('partA', score)
+      console.log(studentAnswers)
+      console.log(score)
+    }
+    else if (flowTopicStep.value === 3) {
+      for (let i = 0; i < studentAnswers.length; i++) {
+        if (studentAnswers[i] === partCAnswers[i]) {
+          score++
+        }
+      }
+      scoreStore.setScore('partC', score)
+      console.log(studentAnswers)
+      console.log(score)
+    }
+  }
+
   // call gemini語音轉文字api
   const uploadAudio = async (audioBlob: Blob, partName: string) => {
     const formData = new FormData()
@@ -260,8 +292,9 @@
           method: 'POST',
           body: formData
         })
+        await checkAns(response.text as '')
+        // 未加入錯誤處理 音檔無內容需跳錯誤
         console.log(`Audio uploaded for ${partName}`)
-        console.log('Gemini 回傳內容：', response.text);
       } catch (err) {
         console.error('Upload error', err)
       }
@@ -271,8 +304,8 @@
           method: 'POST',
           body: formData
         })
+        await checkAns(response.text as '')
         console.log(`Audio uploaded for ${partName}`)
-        console.log('Gemini 回傳內容：', response.text);
       } catch (err) {
         console.error('Upload error', err)
       }

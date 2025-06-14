@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
   
     /* 2. 組 Gemini 請求內容 ------------------------------------------ */
     const contents = [
-      { text: 'Please transcribe only the English alphabet letters heard in the audio. List each letter on a separate line, with no explanation, no punctuation, and nothing else.' },         // 系統或使用者提示，可改繁中
+      { text: 'Please transcribe only the English words heard in the audio. Return each word in lowercase on a separate line with no explanation or punctuation.' },
       {
         inlineData: {
           mimeType: 'audio/mp3',

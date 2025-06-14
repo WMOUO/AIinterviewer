@@ -33,14 +33,9 @@ const check = async() => {
     method: 'POST',
     body: { userId: examCode.value }
   })
-  const userData = data.value?.data.user as User
-  userStore.setUser({
-    users_id: userData.users_id,
-    users_name: userData.users_name,
-    users_class: userData.users_class,
-  })
 
   if (data.value) {
+    userStore.setUser(data.value.data.user as User)
     router.push('/main')
     toast.add({
       severity: 'success',
@@ -70,20 +65,19 @@ const check = async() => {
       <!-- 上層 -->
       <div class="flex justify-between items-center h-[30%] bg-[#d6e2ef] p-6">
         <img src="~/assets/images/titletext.png" alt="titletext" class="max-h-full max-w-[60%]" />
-        <div class="space-x-4">
-          <Button label="Log in" severity="secondary" @click="showInput = true" />
-          <Button label="Sign in" severity="primary" @click="toggleModal" />
-        </div>
       </div>
 
       <!-- 中層 -->
       <div class="flex flex-1 h-[60%] bg-[#d6e2ef] items-center justify-around px-6">
         <img src="~/assets/images/interview.jpg" alt="aiinterview" class="w-[300px] rounded shadow" />
-        <p class="text-center max-w-lg text-black">
-          Because the website looks too empty, I put some irrelevant text in it.
-          <br><br>
-          Anyway, this is a website for online interviews. It uses artificial intelligence to conduct interviews.
-        </p>
+        <div class="flex flex-col gap-6">
+          <p class="text-center max-w-lg text-black">
+            Because the website looks too empty, I put some irrelevant text in it.
+            <br><br>
+            Anyway, this is a website for online interviews. It uses artificial intelligence to conduct interviews.
+          </p>
+           <Button label="進入系統" severity="secondary" @click="showInput = true" class="w-auto self-center"/>
+        </div>
       </div>
 
       <!-- 下層 -->

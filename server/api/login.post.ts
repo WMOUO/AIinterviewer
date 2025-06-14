@@ -1,5 +1,8 @@
 import { supabase } from '~/server/utils/supabase'
+import jwt from 'jsonwebtoken'
+import { setCookie } from 'h3'
 
+const SECRET_KEY = process.env.JWT_SECRET_KEY || 'your-secret-key'
 export default defineEventHandler(async (event) => {
   try {
     // 取得請求的 body
@@ -27,6 +30,15 @@ export default defineEventHandler(async (event) => {
         statusMessage: '找不到此使用者 ID，請確認輸入是否正確'
       })
     } 
+
+    const token = jwt.sign({ users_id: user.users_id }, SECRET_KEY, { expiresIn: '2h' })
+    setCookie(event, 'token', token, {
+      httpOnly: true, // 不可被 JS 存取，更安全
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 2 // 2 小時
+    })
+    
     // 回傳成功結果
     return {
       success: true,

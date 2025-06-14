@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 
 const userStore = useUserStore()
 const router = useRouter()
+const confirm = useConfirm()
 
 const mouseX = ref(0)
 const mouseY = ref(0)
@@ -35,9 +36,18 @@ const goToScores = () => {
 }
 
 const logout = () => {
-  if (confirm('確定要登出嗎？')) {
-    router.push('/')
-  }
+  confirm.require({
+    message: '確定要登出嗎？',
+    header: '確認登出',
+    acceptLabel: '確定',
+    rejectLabel: '取消',
+    acceptClass: 'p-button-danger',
+    accept: async() => {
+      await useFetch('/api/logout', { method: 'POST' })
+      userStore.clearUser()
+      router.push('/')
+    }
+  })
 }
 
 // 今日統計資料（可以從 API 獲取）
@@ -61,18 +71,19 @@ const todayStats = ref({
       <!-- 頂部導航列 -->
       <div class="flex justify-between items-center h-[15%] bg-[#d6e2ef] px-6 shadow-md">
         <img src="~/assets/images/titletext.png" alt="titletext" class="h-[60%]" />
-        <div class="flex items-center space-x-6">
-          <div class="text-right">
-            <p class="text-sm text-gray-600">歡迎回來</p>
-            <p class="text-lg font-semibold text-gray-800">{{ userName }}</p>
+        <div class="flex items-center space-x-6 pt-3">
+          <div class="text-right mt-0.5">
+            <p class="text-sm text-gray-600">帳號名稱</p>
+            <p v-if="userStore.user" class="text-lg font-semibold text-gray-800">{{ userStore.user.users_name }}</p>
           </div>
-          <Button 
-            label="登出" 
-            severity="secondary" 
-            size="small"
-            icon="pi pi-sign-out"
-            @click="logout" 
-          />
+          <div class="flex items-center">
+            <Button 
+              label="登出" 
+              severity="secondary" 
+              size="normal"
+              @click="logout"
+            />
+          </div>
         </div>
       </div>
 
@@ -157,6 +168,7 @@ const todayStats = ref({
         <img src="~/assets/images/down.png" alt="footer" class="h-full object-contain opacity-80" />
       </div>
     </div>
+    <ConfirmDialog class="min-w-[25%]"/>
   </div>
 </template>
 

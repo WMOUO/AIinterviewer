@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 
+const toast = useToast()
+
 const router = useRouter()
 const mouseX = ref(0)
 const mouseY = ref(0)
 
 const updateCursor = (e: MouseEvent) => {
-  mouseX.value = e.clientX
-  mouseY.value = e.clientY
+  mouseX.value = e.clientX-20
+  mouseY.value = e.clientY-20
 }
 
 onMounted(() => {
@@ -24,13 +26,28 @@ const toggleModal = () => {
   alert('尚未實作註冊功能')
 }
 
-const check = () => {
-  if (examCode.value === '123456') {
-    showInput.value = false
+const check = async() => {
+  showInput.value = false
+  const { data,error } = await useFetch('/api/login', {
+    method: 'POST',
+    body: { userId: examCode.value }
+  })
+  if (data.value) {
     router.push('/main')
+    toast.add({
+      severity: 'success',
+      summary: '登入成功',
+      group: 'login',
+      life: 3000
+    })
   } else {
-    alert('考試碼錯誤，請重新輸入')
-  }
+    toast.add({
+      severity: 'error',
+      summary: '登入失敗',
+      group: 'login',
+      life: 3000
+    })
+  } 
 }
 </script>
 

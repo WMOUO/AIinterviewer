@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-
+import type { User } from '~/stores/user'
+const userStore = useUserStore()
 const toast = useToast()
-
 const router = useRouter()
+
 const mouseX = ref(0)
 const mouseY = ref(0)
 
@@ -32,6 +33,13 @@ const check = async() => {
     method: 'POST',
     body: { userId: examCode.value }
   })
+  const userData = data.value?.data.user as User
+  userStore.setUser({
+    users_id: userData.users_id,
+    users_name: userData.users_name,
+    users_class: userData.users_class,
+  })
+
   if (data.value) {
     router.push('/main')
     toast.add({
@@ -50,7 +58,6 @@ const check = async() => {
   } 
 }
 </script>
-
 
 <template>
   <div class="relative h-screen w-screen overflow-hidden font-sans">

@@ -10,12 +10,12 @@
     <div class="flex flex-col w-[50%] h-screen">
 
       <!-- 右上區域AI -->
-      <div class="bg-[#d4e2ff] p-2 h-[50%] item-center justify-center overflow-hidden">
+      <div class="bg-gradient-to-b from-[#dfe4ea] to-[#afd1f5] p-2 h-[50%] item-center justify-center overflow-hidden">
         <video ref="interviewerVideo" :src="introduceVideo" autoplay class="w-full" />
       </div>
 
       <!-- 右下區域攝影機 -->
-      <div class="bg-[#ffefdb] p-2">
+      <div class="bg-gradient-to-b from-[#afd1f5] to-[#9ccafb] p-2">
         <client-only>
         <FaceDetector
         v-model:face-count="faceCount"

@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-
+import type { User } from '~/stores/user'
+const userStore = useUserStore()
+const toast = useToast()
 const router = useRouter()
+
 const mouseX = ref(0)
 const mouseY = ref(0)
 
 const updateCursor = (e: MouseEvent) => {
-  mouseX.value = e.clientX
-  mouseY.value = e.clientY
+  mouseX.value = e.clientX-20
+  mouseY.value = e.clientY-20
 }
 
 onMounted(() => {
@@ -24,16 +27,32 @@ const toggleModal = () => {
   alert('尚未實作註冊功能')
 }
 
-const check = () => {
-  if (examCode.value === '123456') {
-    showInput.value = false
+const check = async() => {
+  showInput.value = false
+  const { data,error } = await useFetch('/api/login', {
+    method: 'POST',
+    body: { userId: examCode.value }
+  })
+
+  if (data.value) {
+    userStore.setUser(data.value.data.user as User)
     router.push('/main')
+    toast.add({
+      severity: 'success',
+      summary: '登入成功',
+      group: 'login',
+      life: 3000
+    })
   } else {
-    alert('考試碼錯誤，請重新輸入')
-  }
+    toast.add({
+      severity: 'error',
+      summary: '登入失敗',
+      group: 'login',
+      life: 3000
+    })
+  } 
 }
 </script>
-
 
 <template>
   <div class="relative h-screen w-screen overflow-hidden font-sans">
@@ -46,20 +65,19 @@ const check = () => {
       <!-- 上層 -->
       <div class="flex justify-between items-center h-[30%] bg-[#d6e2ef] p-6">
         <img src="~/assets/images/titletext.png" alt="titletext" class="max-h-full max-w-[60%]" />
-        <div class="space-x-4">
-          <Button label="Log in" severity="secondary" @click="showInput = true" />
-          <Button label="Sign in" severity="primary" @click="toggleModal" />
-        </div>
       </div>
 
       <!-- 中層 -->
       <div class="flex flex-1 h-[60%] bg-[#d6e2ef] items-center justify-around px-6">
         <img src="~/assets/images/interview.jpg" alt="aiinterview" class="w-[300px] rounded shadow" />
-        <p class="text-center max-w-lg text-black">
-          Because the website looks too empty, I put some irrelevant text in it.
-          <br><br>
-          Anyway, this is a website for online interviews. It uses artificial intelligence to conduct interviews.
-        </p>
+        <div class="flex flex-col gap-6">
+          <p class="text-center max-w-lg text-black">
+            Because the website looks too empty, I put some irrelevant text in it.
+            <br><br>
+            Anyway, this is a website for online interviews. It uses artificial intelligence to conduct interviews.
+          </p>
+           <Button label="進入系統" severity="secondary" @click="showInput = true" class="w-auto self-center"/>
+        </div>
       </div>
 
       <!-- 下層 -->

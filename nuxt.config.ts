@@ -9,7 +9,8 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/supabase',
     '@primevue/nuxt-module',
-    '@nuxtjs/color-mode'
+    '@nuxtjs/color-mode',
+    '@pinia/nuxt'
   ],
   vite: {
     plugins: [
@@ -44,5 +45,8 @@ export default defineNuxtConfig({
     classSuffix: '',
     storage: 'localStorage', // or 'sessionStorage' or 'cookie'
     storageKey: 'nuxt-color-mode'
+  },
+  runtimeConfig: {
+    geminiApiKey: process.env.GEMINI_API_KEY,
   }
 })

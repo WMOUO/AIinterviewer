@@ -18,9 +18,9 @@
       <div class="bg-gradient-to-b from-[#afd1f5] to-[#9ccafb] p-2">
         <client-only>
         <FaceDetector
-        v-model:face-count="faceCount"
-        v-model:video-state="videoState"
-        @terminate="endTest"/>
+          v-model:face-count="faceCount"
+          v-model:video-state="videoState"
+          @terminate="endTest"/>
         </client-only>
       </div>
     </div>
@@ -200,7 +200,7 @@
             next: -1,
           },
         ],
-        next_part: 'end_test',
+        next_part: 'end_exam',
         next_order: 4
       },
     ]) 
@@ -333,7 +333,7 @@
   const nextRound = async() => {
     FinishDialog.value= false
     if (flowTopicStep.value === playList.value.length - 1) {
-      router.push('/endtest')
+      router.push('/endexam')
       return
     }
     flowTopicStep.value += 1
@@ -371,7 +371,7 @@
 
   const endTest = () => {
     alert('偵測三次違規，測驗終止')
-    router.push('/endtest')
+    router.push('/endexam')
   }
 
   onMounted(async () => {

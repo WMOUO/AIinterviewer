@@ -1,35 +1,31 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import type { User } from '~/stores/user'
+
+const router = useRouter()
 const userStore = useUserStore()
 const toast = useToast()
-const router = useRouter()
 
 const mouseX = ref(0)
 const mouseY = ref(0)
+const showInput = ref(false)
+const examCode = ref('')
 
 const updateCursor = (e: MouseEvent) => {
-  mouseX.value = e.clientX-20
-  mouseY.value = e.clientY-20
+  mouseX.value = e.clientX - 20
+  mouseY.value = e.clientY - 20
 }
 
 onMounted(() => {
   window.addEventListener("mousemove", updateCursor)
 })
-
 onUnmounted(() => {
   window.removeEventListener("mousemove", updateCursor)
 })
 
-const showInput = ref(false)
-const examCode = ref('')
-const toggleModal = () => {
-  alert('尚未實作註冊功能')
-}
-
-const check = async() => {
+const check = async () => {
   showInput.value = false
-  const { data,error } = await useFetch('/api/login', {
+  const { data, error } = await useFetch('/api/login', {
     method: 'POST',
     body: { userId: examCode.value }
   })
@@ -37,60 +33,56 @@ const check = async() => {
   if (data.value) {
     userStore.setUser(data.value.data.user as User)
     router.push('/main')
-    toast.add({
-      severity: 'success',
-      summary: '登入成功',
-      group: 'login',
-      life: 3000
-    })
+    toast.add({ severity: 'success', summary: '登入成功', group: 'login', life: 3000 })
   } else {
-    toast.add({
-      severity: 'error',
-      summary: '登入失敗',
-      group: 'login',
-      life: 3000
-    })
-  } 
+    toast.add({ severity: 'error', summary: '登入失敗', group: 'login', life: 3000 })
+  }
 }
 </script>
 
 <template>
-  <div class="relative h-screen w-screen overflow-hidden font-sans">
+  <div class="relative h-screen w-screen overflow-hidden font-sans bg-gradient-to-b from-[#d6e2ef] to-[#9ccafb]">
     <!-- 自訂滑鼠游標 -->
-    <div class="absolute rounded-full w-12 h-12 bg-gray-400/60 shadow-[0_0_15px_15px_rgba(114,105,105,0.6)] pointer-events-none z-[9999]" :style="{ left: `${mouseX}px`, top: `${mouseY}px` }" />
+    <div
+      class="absolute w-12 h-12 rounded-full bg-gray-400/60 shadow-[0_0_15px_15px_rgba(114,105,105,0.6)] pointer-events-none z-[9999]"
+      :style="{ left: `${mouseX}px`, top: `${mouseY}px` }"
+    />
 
     <!-- 主內容 -->
     <div class="flex flex-col h-full">
-      
-      <!-- 上層 -->
-      <div class="flex justify-between items-center h-[30%] bg-[#d6e2ef] p-6">
-        <img src="~/assets/images/titletext.png" alt="titletext" class="max-h-full max-w-[60%]" />
+      <!-- 頂部區塊 -->
+      <div class="flex justify-between items-center h-[20%] px-6 pt-4">
+        <img src="~/assets/images/titletext.png" alt="AI Interviewer" class="h-full max-h-16" />
       </div>
 
-      <!-- 中層 -->
-      <div class="flex flex-1 h-[60%] bg-[#d6e2ef] items-center justify-around px-6">
-        <img src="~/assets/images/interview.jpg" alt="aiinterview" class="w-[300px] rounded shadow" />
-        <div class="flex flex-col gap-6">
-          <p class="text-center max-w-lg text-black">
-            Because the website looks too empty, I put some irrelevant text in it.
-            <br><br>
-            Anyway, this is a website for online interviews. It uses artificial intelligence to conduct interviews.
+      <!-- 中間內容 -->
+      <div class="flex-1 flex flex-col md:flex-row items-center justify-around px-8 gap-6">
+        <!-- 左側圖片 -->
+        <div>
+          <img src="~/assets/images/interview.jpg" alt="AI Interview" class="w-[300px] rounded-xl shadow-lg" />
+        </div>
+
+        <!-- 右側說明與按鈕 -->
+        <div class="flex flex-col items-center gap-4 max-w-md text-center">
+          <p class="text-black text-base leading-relaxed">
+            Welcome to our AI English Exam System.<br/>
+            This platform uses AI technology to help you practice your spoken English.
           </p>
-           <Button label="進入系統" severity="secondary" @click="showInput = true" class="w-auto self-center"/>
+          <Button label="進入系統" severity="secondary" @click="showInput = true" class="px-6 py-2 text-md" />
         </div>
       </div>
 
-      <!-- 下層 -->
-      <div class="h-[10%] bg-[#9ccafb] flex items-center justify-center">
-        <img src="~/assets/images/down.png" alt="titletext" class="h-full object-contain" />
+      <!-- 底部裝飾 -->
+      <div class="h-[10%] flex items-center justify-center">
+        <img src="~/assets/images/down.png" alt="Footer Decoration" class="h-full object-contain opacity-80" />
       </div>
     </div>
 
-    <!-- 彈出輸入框 -->
-    <Dialog v-model:visible="showInput" header="請輸入考試碼" modal>
+    <!-- 考試碼輸入對話框 -->
+    <Dialog v-model:visible="showInput" header="請輸入考試碼" modal class="rounded-xl">
       <div class="flex flex-col gap-4">
-        <InputText v-model="examCode" placeholder="考試碼（如：123456）" />
-        <Button label="確認" @click="check" />
+        <InputText v-model="examCode" placeholder="考試碼（如：123456）" @keyup.enter="check" class="w-full" />
+        <Button label="確認" @click="check" class="self-end" />
       </div>
     </Dialog>
   </div>

@@ -37,7 +37,7 @@ onMounted(async() => {
   let allIdRow = allId as UserRow[]
   let allIdArray = allIdRow?.map(i => i.users_id)
   
-  const { data: allScores, error: allScoresErr } = await supabase.from('score').select(`
+  const { data: allScores, error: allScoresErr } = await supabase.from('scores').select(`
       scores_id,
       scores_score,
       scores_date,

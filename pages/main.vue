@@ -64,7 +64,7 @@ const todayStats = ref({
 })
 
 onMounted(async() => {
-  const { data, error } = await supabase.from('score').select('scores_score').eq('users_id',userId as string)
+  const { data, error } = await supabase.from('scores').select('scores_score').eq('users_id',userId as string)
   if (error) {
     console.log(error)
   }
@@ -135,7 +135,7 @@ onMounted(async() => {
                   <p class="text-sm text-gray-600 mt-1">完成測驗次數</p>
                 </div>
                 <div class="p-4 border-l border-gray-200">
-                  <p class="text-3xl font-bold text-green-600">{{ todayStats.averageScore }}</p>
+                  <p class="text-3xl font-bold text-green-600">{{ todayStats.averageScore.toFixed(1) }}</p>
                   <p class="text-sm text-gray-600 mt-1">平均分數</p>
                 </div>
               </div>

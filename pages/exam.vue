@@ -317,7 +317,6 @@
   const dialogButtonLabel = ref('')
   
   const checkRound = async() => {
-    FinishDialog.value = true
     if (flowTopicStep.value === 3) {
       dialogButtonLabel.value = '結束測驗'
     }else {
@@ -327,6 +326,7 @@
       const audioBlob = await stopRecording()
       await uploadAudio(audioBlob, playList.value[flowTopicStep.value].name)
     }
+    FinishDialog.value = true
   }
   
   // 轉下一個part
@@ -352,7 +352,6 @@
       isVideo.value = true
       examVideo.value = index.exam_video
     }
-    console.log(index.exam_image)
     introduceVideo.value = index.introduce_video
   }
 

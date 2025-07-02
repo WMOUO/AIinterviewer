@@ -1,13 +1,20 @@
 <script setup lang="ts">
+type UserScore = {
+  scores_score: number
+}
+
 import { useRouter } from 'vue-router'
 
 const userStore = useUserStore()
 const router = useRouter()
 const confirm = useConfirm()
 
+const supabase = useSupabaseClient()
+
 const mouseX = ref(0)
 const mouseY = ref(0)
 const userName = ref(userStore.user?.users_name)
+const userId = userStore.user?.users_id
 
 const updateCursor = (e: MouseEvent) => {
   mouseX.value = e.clientX - 20
@@ -50,11 +57,25 @@ const logout = () => {
   })
 }
 
-// 今日統計資料（可以從 API 獲取）
+// 今日統計資料（可以從 API 獲取
 const todayStats = ref({
-  completedExams: 2,
-  averageScore: 85,
+  completedExams: 0,
+  averageScore: 0,
 })
+
+onMounted(async() => {
+  const { data, error } = await supabase.from('scores').select('scores_score').eq('users_id',userId as string)
+  if (error) {
+    console.log(error)
+  }
+  todayStats.value.completedExams = data?.length as 0
+  console.log(data)
+  
+  let allScores: number[] = (data as { scores_score: number }[] ?? []).map(i => i.scores_score)
+  let totalScores = allScores.reduce((a,b) => a + b)
+  todayStats.value.averageScore = totalScores/allScores.length
+  }
+)
 </script>
 
 <template>
@@ -114,7 +135,7 @@ const todayStats = ref({
                   <p class="text-sm text-gray-600 mt-1">完成測驗次數</p>
                 </div>
                 <div class="p-4 border-l border-gray-200">
-                  <p class="text-3xl font-bold text-green-600">{{ todayStats.averageScore }}</p>
+                  <p class="text-3xl font-bold text-green-600">{{ todayStats.averageScore.toFixed(1) }}</p>
                   <p class="text-sm text-gray-600 mt-1">平均分數</p>
                 </div>
               </div>

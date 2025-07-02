@@ -2,6 +2,8 @@
 import { useRouter } from 'vue-router'
 
 const scoreStore = useScoreStore()
+const userStore = useUserStore()
+const supabase = useSupabaseClient()
 const router = useRouter()
 
 const mouseX = ref(0)
@@ -16,11 +18,6 @@ const updateCursor = (e: MouseEvent) => {
 
 onMounted(() => {
   window.addEventListener("mousemove", updateCursor)
-  
-  // 測驗系統結束就可以實際抓資料
-  scoreStore.setScore('partA', 30)
-  scoreStore.setScore('partB', 25)
-  scoreStore.setScore('partC', 22)
 })
 
 onUnmounted(() => {
@@ -31,6 +28,21 @@ onUnmounted(() => {
 const examCardHover = ref(false)
 const scoreCardHover = ref(false)
 
+const totalScore = ref(scores.partA+scores.partB+scores.partC)
+
+const getDate = () => {
+  const today = new Date()
+  const yy = today.getFullYear()
+  const mm = String(today.getMonth()+1).padStart(2, '0')
+  const dd = String(today.getDate()).padStart(2, '0')
+  return `${yy}-${mm}-${dd}`
+}
+
+const endexam = async() => {
+  const date = await getDate()
+  const { error } = await supabase.from('scores').insert({scores_score: totalScore.value, scores_date: date, users_id: userStore.user?.users_id })
+  router.push('/main')
+}
 </script>
 
 <template>
@@ -73,7 +85,7 @@ const scoreCardHover = ref(false)
             <Card class="min-h-full text-white shadow-xl">
               <template #content>
                 <div class="flex flex-col items-center justify-center text-center py-12 min-h-full">
-                  <p class="text-blue-100 mb-6 text-6xl">68/90</p>
+                  <p class="text-blue-100 mb-6 text-6xl">{{ totalScore }}/90</p>
                   <h2 class="text-xl font-bold mb-2">總成績</h2>
                 </div>
               </template>
@@ -81,7 +93,7 @@ const scoreCardHover = ref(false)
         </div>
         
         <div class="flex min-w-full items-center justify-center mt-10">
-            <Button label="結束測驗" @click="router.push('/main')"/>
+            <Button label="結束測驗" @click="endexam()"/>
         </div>
       </div>
     </div>

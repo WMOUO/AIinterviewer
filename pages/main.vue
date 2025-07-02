@@ -91,7 +91,7 @@ onMounted(async() => {
       
       <!-- 頂部導航列 -->
       <div class="flex justify-between items-center h-[15%] bg-[#d6e2ef] px-6 shadow-md">
-        <img src="~/assets/images/titletext.png" alt="titletext" class="h-[60%]" />
+        <img src="/images/titletext.png" alt="titletext" class="h-[60%]" />
         <div class="flex items-center space-x-6 pt-3">
           <div class="text-right mt-0.5">
             <p class="text-sm text-gray-600">帳號名稱</p>
@@ -186,7 +186,7 @@ onMounted(async() => {
 
       <!-- 底部裝飾 -->
       <div class="h-[8%] bg-[#9ccafb] flex items-center justify-center shadow-inner">
-        <img src="~/assets/images/down.png" alt="footer" class="h-full object-contain opacity-80" />
+        <img src="/images/down.png" alt="footer" class="h-full object-contain opacity-80" />
       </div>
     </div>
     <ConfirmDialog class="min-w-[25%]"/>

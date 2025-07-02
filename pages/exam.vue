@@ -48,41 +48,41 @@
   //import { useToast } from 'primevue/usetoast';
 
   //通用
-  import Reciprocal10 from '~/assets/video/reciprocal10.mp4'
-  import Reciprocal60 from '~/assets/video/Reciprocal60.mp4'
-  import TestIntroduce from '~/assets/video/pretest_Introduce.mp4'
+  const Reciprocal10 = '/video/reciprocal10.mp4'
+  const Reciprocal60 = '/video/Reciprocal60.mp4'
+  const TestIntroduce = '/video/pretest_Introduce.mp4'
 
-  import IntroduceImage from '~/assets/images/introduce.png'
-  import IntroduceRuleImage from '~/assets/images/exam_rule.png'
-  import IntroduceInterviewer from '~/assets/video/introduce.mp4'
-  import IntroduceRule from '~/assets/video/rule.mp4'
+  const IntroduceImage = '/images/introduce.png'
+  const IntroduceRuleImage = '/images/exam_rule.png'
+  const IntroduceInterviewer = '/video/introduce.mp4'
+  const IntroduceRule = '/video/rule.mp4'
 
-  // partA介紹
-  import IntroducePartA from '~/assets/video/partA/PartA_introduce.mp4'
-  import ReadyPartA from '~/assets/video/partA/PartA_ready.mp4'
-  import PartAImg from '~/assets/video/partA/PartA.jpg'
-  // partA前測
-  import PretestPartA from '~/assets/video/partA/PartA_pretest.mp4'
-  // partA正式測驗
-  import PartATest from '~/assets/video/partA/PartA_test.mp4'
+  // partA 介紹
+  const IntroducePartA = '/video/partA/PartA_introduce.mp4'
+  const ReadyPartA = '/video/partA/PartA_ready.mp4'
+  const PartAImg = '/video/partA/PartA.jpg'
+  // partA 前測
+  const PretestPartA = '/video/partA/PartA_pretest.mp4'
+  // partA 正式測驗
+  const PartATest = '/video/partA/PartA_test.mp4'
 
-  // partB介紹
-  import IntroducePartB from '~/assets/video/partB/PartB_introduce.mp4'
-  import ReadyPartB from '~/assets/video/partB/PartB_ready.mp4'
-  import PartBImg from '~/assets/video/partB/PartB.jpg'
-  // partB前測
-  import PretestPartB from '~/assets/video/partB/PartB_pretest.mp4'
-  // partB正式測驗
-  import PartBTest from '~/assets/video/partB/PartB_test.mp4'
+  // partB 介紹
+  const IntroducePartB = '/video/partB/PartB_introduce.mp4'
+  const ReadyPartB = '/video/partB/PartB_ready.mp4'
+  const PartBImg = '/video/partB/PartB.jpg'
+  // partB 前測
+  const PretestPartB = '/video/partB/PartB_pretest.mp4'
+  // partB 正式測驗
+  const PartBTest = '/video/partB/PartB_test.mp4'
 
-  // partC介紹
-  import IntroducePartC from '~/assets/video/partC/PartC_introduce.mp4'
-  import ReadyPartC from '~/assets/video/partC/PartC_ready.mp4'
-  import PartCImg from '~/assets/video/partC/PartC.jpg'
-  // partC前測
-  import PretestPartC from '~/assets/video/partC/PartC_pretest.mp4'
-  // partC正式測驗
-  import PartCTest from '~/assets/video/partC/PartC_test.mp4'
+  // partC 介紹
+  const IntroducePartC = '/video/partC/PartC_introduce.mp4'
+  const ReadyPartC = '/video/partC/PartC_ready.mp4'
+  const PartCImg = '/video/partC/PartC.jpg'
+  // partC 前測
+  const PretestPartC = '/video/partC/PartC_pretest.mp4'
+  // partC 正式測驗
+  const PartCTest = '/video/partC/PartC_test.mp4'
 
   // 測驗流程
   const playList = ref([{

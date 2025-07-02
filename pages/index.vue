@@ -52,14 +52,14 @@ const check = async () => {
     <div class="flex flex-col h-full">
       <!-- 頂部區塊 -->
       <div class="flex justify-between items-center h-[20%] px-6 pt-4">
-        <img src="~/assets/images/titletext.png" alt="AI Interviewer" class="h-full max-h-16" />
+        <img src="/images/titletext.png" alt="AI Interviewer" class="h-full max-h-16" />
       </div>
 
       <!-- 中間內容 -->
       <div class="flex-1 flex flex-col md:flex-row items-center justify-around px-8 gap-6">
         <!-- 左側圖片 -->
         <div>
-          <img src="~/assets/images/interview.jpg" alt="AI Interview" class="w-[300px] rounded-xl shadow-lg" />
+          <img src="/images/interview.jpg" alt="AI Interview" class="w-[300px] rounded-xl shadow-lg" />
         </div>
 
         <!-- 右側說明與按鈕 -->
@@ -74,7 +74,7 @@ const check = async () => {
 
       <!-- 底部裝飾 -->
       <div class="h-[10%] flex items-center justify-center">
-        <img src="~/assets/images/down.png" alt="Footer Decoration" class="h-full object-contain opacity-80" />
+        <img src="/images/down.png" alt="Footer Decoration" class="h-full object-contain opacity-80" />
       </div>
     </div>
 

@@ -24,6 +24,14 @@
         </client-only>
       </div>
     </div>
+
+    <Dialog v-model:visible="LoadingDialog" :closable="false" class="min-w-[10vw]">
+      <div class="flex flex-col justify-center items-center gap-5">
+        <p class="text-lg">評分中...</p>
+        <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="6" fill="transparent" animationDuration=".9s" aria-label="Custom ProgressSpinner" />
+      </div>
+    </Dialog>
+
     <Dialog v-model:visible="FinishDialog" :closable="false">
       <p>該測驗部分已完成</p>
       <template #footer>
@@ -50,27 +58,27 @@
   import IntroduceRule from '~/assets/video/rule.mp4'
 
   // partA介紹
-  import IntroducePartA from '~/assets/video/partA/partA_introduce.mp4'
-  import ReadyPartA from '~/assets/video/partA/partA_ready.mp4'
-  import PartAImg from '~/assets/video/partA/partA.jpg'
+  import IntroducePartA from '~/assets/video/partA/PartA_introduce.mp4'
+  import ReadyPartA from '~/assets/video/partA/PartA_ready.mp4'
+  import PartAImg from '~/assets/video/partA/PartA.jpg'
   // partA前測
   import PretestPartA from '~/assets/video/partA/PartA_pretest.mp4'
   // partA正式測驗
   import PartATest from '~/assets/video/partA/PartA_test.mp4'
 
   // partB介紹
-  import IntroducePartB from '~/assets/video/partB/partB_introduce.mp4'
-  import ReadyPartB from '~/assets/video/partB/partB_ready.mp4'
-  import PartBImg from '~/assets/video/partB/partB.jpg'
+  import IntroducePartB from '~/assets/video/partB/PartB_introduce.mp4'
+  import ReadyPartB from '~/assets/video/partB/PartB_ready.mp4'
+  import PartBImg from '~/assets/video/partB/PartB.jpg'
   // partB前測
   import PretestPartB from '~/assets/video/partB/PartB_pretest.mp4'
   // partB正式測驗
   import PartBTest from '~/assets/video/partB/PartB_test.mp4'
 
   // partC介紹
-  import IntroducePartC from '~/assets/video/partC/partC_introduce.mp4'
-  import ReadyPartC from '~/assets/video/partC/partC_ready.mp4'
-  import PartCImg from '~/assets/video/partC/partC.jpg'
+  import IntroducePartC from '~/assets/video/partC/PartC_introduce.mp4'
+  import ReadyPartC from '~/assets/video/partC/PartC_ready.mp4'
+  import PartCImg from '~/assets/video/partC/PartC.jpg'
   // partC前測
   import PretestPartC from '~/assets/video/partC/PartC_pretest.mp4'
   // partC正式測驗
@@ -316,7 +324,10 @@
   const FinishDialog = ref(false)
   const dialogButtonLabel = ref('')
   
+  const LoadingDialog = ref(false)
+
   const checkRound = async() => {
+    LoadingDialog.value = true
     if (flowTopicStep.value === 3) {
       dialogButtonLabel.value = '結束測驗'
     }else {
@@ -326,6 +337,7 @@
       const audioBlob = await stopRecording()
       await uploadAudio(audioBlob, playList.value[flowTopicStep.value].name)
     }
+    LoadingDialog.value = false
     FinishDialog.value = true
   }
   

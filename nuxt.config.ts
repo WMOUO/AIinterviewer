@@ -10,7 +10,8 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase',
     '@primevue/nuxt-module',
     '@nuxtjs/color-mode',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    '@nuxthub/core'
   ],
   vite: {
     plugins: [

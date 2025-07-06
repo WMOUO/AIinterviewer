@@ -1,10 +1,11 @@
-import { supabase } from '~/server/utils/supabase'
 import jwt from 'jsonwebtoken'
 import { setCookie } from 'h3'
+import { serverSupabaseClient } from '#supabase/server'
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY || 'your-secret-key'
 export default defineEventHandler(async (event) => {
   try {
+    const client = await serverSupabaseClient(event)
     // 取得請求的 body
     const body = await readBody(event)
     const { userId } = body
@@ -18,7 +19,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // 從 Supabase 查詢用戶
-    const { data: user, error: fetchError } = await supabase
+    const { data: user, error: fetchError } = await client
       .from('users')
       .select('*')
       .eq('users_id', userId)

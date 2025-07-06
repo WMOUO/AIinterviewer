@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken'
-import { supabase } from '~/server/utils/supabase'
+import { serverSupabaseClient } from '#supabase/server'
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY || 'secret'
 
 export default defineEventHandler(async (event) => {
+  const client = await serverSupabaseClient(event)
   const token = getCookie(event, 'token')
   if (!token) {
     throw createError({ statusCode: 401, statusMessage: '未登入' })
@@ -12,7 +13,7 @@ export default defineEventHandler(async (event) => {
   try {
     const decoded = jwt.verify(token, SECRET_KEY) as { users_id: string }
 
-    const { data: user, error } = await supabase
+    const { data: user, error } = await client
       .from('users')
       .select('users_id, users_name, users_class')
       .eq('users_id', decoded.users_id)
@@ -32,3 +33,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 403, statusMessage: 'Token 驗證失敗' })
   }
 })
+function useSupabaseClient() {
+  throw new Error('Function not implemented.')
+}
+

@@ -20,6 +20,10 @@ export default defineNuxtConfig({
   },
   supabase: {
     redirect: false,
+    redirectOptions: {
+      login: '/',
+      callback: '/main'
+    },
     clientOptions: {
       auth: {
         autoRefreshToken: true,

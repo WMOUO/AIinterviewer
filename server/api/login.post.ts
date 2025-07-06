@@ -1,24 +1,23 @@
-import { supabase } from '~/server/utils/supabase'
-import jwt from 'jsonwebtoken'
+// login.post.ts
+import { SignJWT } from 'jose'
 import { setCookie } from 'h3'
+import { serverSupabaseClient } from '#supabase/server'
 
-const SECRET_KEY = process.env.JWT_SECRET_KEY || 'your-secret-key'
+const SECRET_KEY = new TextEncoder().encode(
+  process.env.JWT_SECRET_KEY || 'your-secret-key'
+)
+
 export default defineEventHandler(async (event) => {
   try {
-    // 取得請求的 body
+    const client = await serverSupabaseClient(event)
     const body = await readBody(event)
     const { userId } = body
 
-    // 驗證必填欄位
     if (!userId) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: '請提供使用者 ID'
-      })
+      throw createError({ statusCode: 400, statusMessage: '請提供使用者 ID' })
     }
 
-    // 從 Supabase 查詢用戶
-    const { data: user, error: fetchError } = await supabase
+    const { data: user, error: fetchError } = await client
       .from('users')
       .select('*')
       .eq('users_id', userId)
@@ -29,17 +28,21 @@ export default defineEventHandler(async (event) => {
         statusCode: 401,
         statusMessage: '找不到此使用者 ID，請確認輸入是否正確'
       })
-    } 
+    }
 
-    const token = jwt.sign({ users_id: user.users_id }, SECRET_KEY, { expiresIn: '2h' })
+    // jose：簽 Token（必須 await）
+    const token = await new SignJWT({ users_id: user.users_id })
+      .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
+      .setExpirationTime('2h')
+      .sign(SECRET_KEY)
+
     setCookie(event, 'token', token, {
-      httpOnly: true, // 不可被 JS 存取，更安全
+      httpOnly: true,
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
       maxAge: 60 * 60 * 2 // 2 小時
     })
-    
-    // 回傳成功結果
+
     return {
       success: true,
       message: '登入成功',
@@ -47,13 +50,11 @@ export default defineEventHandler(async (event) => {
         user: {
           users_id: user.users_id,
           users_name: user.users_name,
-          users_class: user.users_class,
+          users_class: user.users_class
         }
       }
     }
-
   } catch (error: any) {
-    // 錯誤處理
     throw createError({
       statusCode: error.statusCode || 500,
       statusMessage: error.statusMessage || '登入失敗'

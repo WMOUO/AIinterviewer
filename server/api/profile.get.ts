@@ -1,22 +1,26 @@
-import jwt from 'jsonwebtoken'
+// profile.get.ts
+import { jwtVerify } from 'jose'
 import { serverSupabaseClient } from '#supabase/server'
 
-const SECRET_KEY = process.env.JWT_SECRET_KEY || 'secret'
+const SECRET_KEY = new TextEncoder().encode(
+  process.env.JWT_SECRET_KEY || 'secret'
+)
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
   const token = getCookie(event, 'token')
-  if (!token) {
-    throw createError({ statusCode: 401, statusMessage: '未登入' })
-  }
+  if (!token) throw createError({ statusCode: 401, statusMessage: '未登入' })
 
   try {
-    const decoded = jwt.verify(token, SECRET_KEY) as { users_id: string }
+    // jose：驗證（await），同時取 payload
+    const { payload } = await jwtVerify<{ users_id: string }>(token, SECRET_KEY, {
+      algorithms: ['HS256']
+    })
 
     const { data: user, error } = await client
       .from('users')
       .select('users_id, users_name, users_class')
-      .eq('users_id', decoded.users_id)
+      .eq('users_id', payload.users_id)
       .single()
 
     if (error || !user) {
@@ -28,12 +32,7 @@ export default defineEventHandler(async (event) => {
       users_name: user.users_name,
       users_class: user.users_class
     }
-
-  } catch (err) {
+  } catch {
     throw createError({ statusCode: 403, statusMessage: 'Token 驗證失敗' })
   }
 })
-function useSupabaseClient() {
-  throw new Error('Function not implemented.')
-}
-

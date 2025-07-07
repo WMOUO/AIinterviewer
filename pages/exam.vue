@@ -67,7 +67,7 @@
   const PartATest = '/video/partA/PartA_test.mp4'
 
   // partB 介紹
-  const IntroducePartB = '/video/partB/PartB_introduce.mp4'
+  const IntroducePartB = '/video/partB/PartB_Introduce.mp4'
   const ReadyPartB = '/video/partB/PartB_ready.mp4'
   const PartBImg = '/video/partB/PartB.jpg'
   // partB 前測
@@ -76,7 +76,7 @@
   const PartBTest = '/video/partB/PartB_test.mp4'
 
   // partC 介紹
-  const IntroducePartC = '/video/partC/PartC_introduce.mp4'
+  const IntroducePartC = '/video/partC/PartC_Introduce.mp4'
   const ReadyPartC = '/video/partC/PartC_ready.mp4'
   const PartCImg = '/video/partC/PartC.jpg'
   // partC 前測

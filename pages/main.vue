@@ -79,7 +79,7 @@ onMounted(async() => {
 </script>
 
 <template>
-  <div class="relative min-h-screen min-w-screen overflow-hidden font-sans">
+  <div class="relative min-h-screen min-w-screen overflow-hidden font-sans bg-gradient-to-b from-[#d6e2ef] to-[#9ccafb]">
     <!-- 自訂滑鼠游標 -->
     <!-- <div 
       class="absolute rounded-full w-12 h-12 bg-gray-400/60 shadow-[0_0_15px_15px_rgba(114,105,105,0.6)] pointer-events-none z-[9999]" 
@@ -111,7 +111,7 @@ onMounted(async() => {
       </div>
 
       <!-- 主要內容區 -->
-      <div class="flex-1 bg-gradient-to-b from-[#d6e2ef] to-[#9ccafb] p-8">
+      <div class="flex-1 p-8">
         
         <!-- 歡迎訊息 -->
         <div class="text-center mb-8">
@@ -193,8 +193,11 @@ onMounted(async() => {
       </div>
 
       <!-- 底部裝飾 -->
-      <div class="h-[8%] bg-[#9ccafb] flex items-center justify-center shadow-inner">
+      <!-- <div class="h-[8%] bg-[#9ccafb] flex items-center justify-center shadow-inner">
         <img src="/images/down.png" alt="footer" class="h-full object-contain opacity-80" />
+      </div> -->
+      <div class="flex justify-center w-full pb-2">
+        <div class="flex w-[96%] h-[3px] bg-black justify-center" />
       </div>
     </div>
     <ConfirmDialog class="min-w-[25%]"/>

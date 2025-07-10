@@ -51,14 +51,18 @@ const check = async () => {
     <!-- 主內容 -->
     <div class="flex flex-col h-full">
       <!-- 頂部區塊 -->
-      <div class="flex justify-between items-center h-[20%] px-6 pt-4">
+      <!-- <div class="flex justify-between items-center h-[20%] px-6 pt-4">
         <img src="/images/titletext.png" alt="AI Interviewer" class="h-full max-h-16" />
-      </div>
+         
+      </div> -->
 
       <!-- 中間內容 -->
       <div class="flex-1 flex flex-col md:flex-row items-center justify-around px-8 gap-6">
         <!-- 左側圖片 -->
-        <div>
+        <div class="flex flex-col w-full md:w-[50%] items-center gap-3">
+          <p class="md:text-5xl text-4xl text-black font-caveat mb-3">
+            BigByte English Proficiency Test
+         </p>
           <img src="/images/interview.jpg" alt="AI Interview" class="w-[300px] rounded-xl shadow-lg" />
         </div>
 
@@ -73,9 +77,9 @@ const check = async () => {
       </div>
 
       <!-- 底部裝飾 -->
-      <div class="h-[10%] flex items-center justify-center">
+      <!-- <div class="h-[10%] flex items-center justify-center">
         <img src="/images/down.png" alt="Footer Decoration" class="h-full object-contain opacity-80" />
-      </div>
+      </div> -->
     </div>
 
     <!-- 考試碼輸入對話框 -->

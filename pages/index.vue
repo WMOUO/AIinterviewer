@@ -80,6 +80,9 @@ const check = async () => {
       <!-- <div class="h-[10%] flex items-center justify-center">
         <img src="/images/down.png" alt="Footer Decoration" class="h-full object-contain opacity-80" />
       </div> -->
+      <div class="flex justify-center w-full pb-2">
+        <div class="flex w-[96%] h-[3px] bg-black justify-center" />
+      </div>
     </div>
 
     <!-- 考試碼輸入對話框 -->

@@ -63,19 +63,19 @@ onMounted(async() => {
 <template>
   <div class="min-h-screen bg-gradient-to-b from-[#d6e2ef] to-[#9ccafb] p-8">
     <div class="max-w-5xl mx-auto">
-      <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">成績查詢</h1>
+      <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">成績查詢(View Grades)</h1>
 
       <!-- 自己的成績 -->
       <Card class="mb-10 !bg-white/90 backdrop-blur-sm shadow-lg">
         <template #header>
-          <h2 class="text-xl font-semibold text-gray-700 p-4">您的成績</h2>
+          <h2 class="text-xl font-semibold text-gray-700 p-4">您的成績/Your Grades</h2>
         </template>
         <template #content>
           <table class="w-full table-auto border-collapse">
             <thead>
               <tr class="bg-gray-100 text-gray-700">
-                <th class="py-2 px-4 border">考試日期</th>
-                <th class="py-2 px-4 border">分數</th>
+                <th class="py-2 px-4 border">考試日期/Exam Date</th>
+                <th class="py-2 px-4 border">分數/Score</th>
               </tr>
             </thead>
             <tbody>
@@ -91,16 +91,16 @@ onMounted(async() => {
       <!-- 班級排名 -->
       <Card class="!bg-white/90 backdrop-blur-sm shadow-lg">
         <template #header>
-          <h2 class="text-xl font-semibold text-gray-700 p-4">班級成績排名</h2>
+          <h2 class="text-xl font-semibold text-gray-700 p-4">班級成績排名/Class Ranking</h2>
         </template>
         <template #content>
           <table class="w-full table-auto border-collapse">
             <thead>
               <tr class="bg-gray-100 text-gray-700">
-                <th class="py-2 px-4 border">名次</th>
-                <th class="py-2 px-4 border">使用者 ID</th>
-                <th class="py-2 px-4 border">考試日期</th>
-                <th class="py-2 px-4 border">分數</th>
+                <th class="py-2 px-4 border">名次/Rank</th>
+                <th class="py-2 px-4 border">使用者 ID/User ID</th>
+                <th class="py-2 px-4 border">考試日期/Exam Date</th>
+                <th class="py-2 px-4 border">分數/Score</th>
               </tr>
             </thead>
             <tbody>

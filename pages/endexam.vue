@@ -11,6 +11,12 @@ const router = useRouter()
 
 const scores = scoreStore.score
 
+const colorMode = useColorMode()
+const isLight = ref(false)
+onMounted(() => {
+  isLight.value = (colorMode.value === 'light')
+})
+
 // const updateCursor = (e: MouseEvent) => {
 //   mouseX.value = e.clientX - 20
 //   mouseY.value = e.clientY - 20
@@ -85,7 +91,7 @@ const endexam = async() => {
             <Card class="min-h-full text-white shadow-xl">
               <template #content>
                 <div class="flex flex-col items-center justify-center text-center py-12 min-h-full">
-                  <p class="text-blue-100 mb-6 text-6xl">{{ totalScore }}/90</p>
+                  <p class="mb-6 text-6xl" :class="[isLight ? 'text-blue-300' : 'text-blue-100']">{{ totalScore }}/90</p>
                   <h2 class="text-xl font-bold mb-2">總成績<br>Total Score</h2>
                 </div>
               </template>

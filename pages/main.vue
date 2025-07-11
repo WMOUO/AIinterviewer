@@ -11,6 +11,12 @@ const confirm = useConfirm()
 
 const supabase = useSupabaseClient()
 
+const colorMode = useColorMode()
+const isLight = ref(false)
+onMounted(() => {
+  isLight.value = (colorMode.value === 'light')
+})
+
 // const mouseX = ref(0)
 // const mouseY = ref(0)
 const userName = ref(userStore.user?.users_name)
@@ -124,7 +130,7 @@ onMounted(async() => {
           <Card class="bg-white/80 backdrop-blur">
             <template #header>
               <div class="px-6 pt-4">
-                <h3 class="text-xl font-semibold text-gray-700 flex items-center">
+                <h3 class="text-xl font-semibold flex items-center" :class="[isLight ? 'text-gray-700' : 'text-blue-100']">
                   <i class="pi pi-chart-line mr-2"></i>
                   學習統計/Learning Statistics
                 </h3>
@@ -134,11 +140,11 @@ onMounted(async() => {
               <div class="grid grid-cols-2 gap-4 text-center">
                 <div class="p-4">
                   <p class="text-3xl font-bold text-blue-600">{{ todayStats.completedExams }}</p>
-                  <p class="text-sm text-gray-600 mt-1">完成測驗次數<br>Number of Completed Quizzes</p>
+                  <p class="text-sm mt-1" :class="[isLight ? 'text-gray-600' : 'text-zinc-300']">完成測驗次數<br>Number of Completed Quizzes</p>
                 </div>
                 <div class="p-4 border-l border-gray-200">
                   <p class="text-3xl font-bold text-green-600">{{ todayStats.averageScore.toFixed(1) }}</p>
-                  <p class="text-sm text-gray-600 mt-1">平均分數<br>Average Score</p>
+                  <p class="text-sm mt-1" :class="[isLight ? 'text-gray-600' : 'text-zinc-300']">平均分數<br>Average Score</p>
                 </div>
               </div>
             </template>
@@ -163,7 +169,7 @@ onMounted(async() => {
                     <h2 class="text-2xl font-bold">進入測驗</h2>
                     <p class="">Begin the Test</p>
                   </div>
-                  <p class="text-blue-100 mb-6">開始您的英語語音測驗練習<br>Start Your English Speaking Test Practice</p>
+                  <p class="mb-6" :class="[isLight ? 'text-slate-600' : 'text-zinc-300']">開始您的英語語音測驗練習<br>Start Your English Speaking Test Practice</p>
                 </div>
               </template>
             </Card>
@@ -184,7 +190,7 @@ onMounted(async() => {
                     <h2 class="text-2xl font-bold">成績查詢</h2>
                     <p class="">View Grades</p>
                   </div>
-                  <p class="text-green-100 mb-6">查看您的學習進度與成績<br>View Your Learning Progress and Grades</p>
+                  <p class="mb-6" :class="[isLight ? 'text-slate-600' : 'text-zinc-300']">查看您的學習進度與成績<br>View Your Learning Progress and Grades</p>
                 </div>
               </template>
             </Card>

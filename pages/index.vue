@@ -60,7 +60,7 @@ const check = async () => {
       <div class="flex-1 flex flex-col md:flex-row items-center justify-around px-8 gap-6">
         <!-- 左側圖片 -->
         <div class="flex flex-col w-full md:w-[50%] items-center gap-3">
-          <p class="md:text-5xl text-4xl text-black font-caveat mb-3">
+          <p class="flex md:text-5xl text-4xl text-black font-caveat w-full mb-3 items-center">
             BigByte English Proficiency Test
          </p>
           <img src="/images/interview.jpg" alt="AI Interview" class="w-[300px] rounded-xl shadow-lg" />

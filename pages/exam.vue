@@ -55,8 +55,8 @@
   const Reciprocal60 = '/video/Reciprocal60.mp4'
   const TestIntroduce = '/video/pretest_introduce.mp4'
 
-  const IntroduceImage = '/images/introduce.png'
-  const IntroduceRuleImage = '/images/exam_rule.png'
+  const IntroduceImage = '/images/introduce_new.png'
+  const IntroduceRuleImage = '/images/exam_rule_new.png'
   const IntroduceInterviewer = '/video/introduce.mp4'
   const IntroduceRule = '/video/rule.mp4'
 

@@ -53,7 +53,7 @@
   //通用
   const Reciprocal10 = '/video/reciprocal10.mp4'
   const Reciprocal60 = '/video/Reciprocal60.mp4'
-  const TestIntroduce = '/video/pretest_introduce.mp4'
+  const TestIntroduce = '/video/pretest_Introduce.mp4'
 
   const IntroduceImage = '/images/introduce_new.png'
   const IntroduceRuleImage = '/images/exam_rule_new.png'

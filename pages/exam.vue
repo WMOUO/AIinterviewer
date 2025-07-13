@@ -57,7 +57,7 @@
 
   const IntroduceImage = '/images/introduce_new.png'
   const IntroduceRuleImage = '/images/exam_rule_new.png'
-  const IntroduceInterviewer = '/video/introduce.mp4'
+  const IntroduceInterviewer = '/video/introduce_new.mp4'
   const IntroduceRule = '/video/rule.mp4'
 
   // partA 介紹

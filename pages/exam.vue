@@ -33,7 +33,10 @@
     </Dialog>
 
     <Dialog v-model:visible="FinishDialog" :closable="false">
-      <p>該測驗部分已完成</p>
+      <div class="flex flex-col gap-0 items-center justify-center">
+        <p class="text-lg">{{dialogContentChinese}}</p>
+        <p>{{dialogContentEnglish}}</p>
+      </div>
       <template #footer>
         <div class="flex w-full justify-center items-center">
           <Button type="button" :label="dialogButtonLabel" @click="nextRound()" />
@@ -50,11 +53,11 @@
   //通用
   const Reciprocal10 = '/video/reciprocal10.mp4'
   const Reciprocal60 = '/video/Reciprocal60.mp4'
-  const TestIntroduce = '/video/pretest_introduce.mp4'
+  const TestIntroduce = '/video/pretest_Introduce.mp4'
 
-  const IntroduceImage = '/images/introduce.png'
-  const IntroduceRuleImage = '/images/exam_rule.png'
-  const IntroduceInterviewer = '/video/introduce.mp4'
+  const IntroduceImage = '/images/introduce_new.png'
+  const IntroduceRuleImage = '/images/exam_rule_new.png'
+  const IntroduceInterviewer = '/video/introduce_new.mp4'
   const IntroduceRule = '/video/rule.mp4'
 
   // partA 介紹
@@ -322,6 +325,8 @@
 
   // Dialog
   const FinishDialog = ref(false)
+  const dialogContentChinese = ref('')
+  const dialogContentEnglish = ref('')
   const dialogButtonLabel = ref('')
   
   const LoadingDialog = ref(false)
@@ -329,10 +334,25 @@
   const checkRound = async() => {
     LoadingDialog.value = true
     if (flowTopicStep.value === 3) {
-      dialogButtonLabel.value = '結束測驗'
+      dialogButtonLabel.value = 'End the Test'
     }else {
-      dialogButtonLabel.value = `開始${playList.value[flowTopicStep.value+1].name}`
+      dialogButtonLabel.value = `Start ${playList.value[flowTopicStep.value+1].name}`
     }
+
+    if (flowTopicStep.value === 0) {
+      dialogContentChinese.value = '測驗介紹已完成'
+      dialogContentEnglish.value = 'The test introduction has been completed.'
+    } else if (flowTopicStep.value === 1) {
+      dialogContentChinese.value = `Part A 已完成`
+      dialogContentEnglish.value = `Part A has been completed.`
+    } else if (flowTopicStep.value === 2) {
+      dialogContentChinese.value = `Part B 已完成`
+      dialogContentEnglish.value = `Part B has been completed.`
+    } else {
+      dialogContentChinese.value = `Part C 已完成`
+      dialogContentEnglish.value = `Part C has been completed.`
+    }
+    
     if (flowTopicStep.value !== 0) {
       const audioBlob = await stopRecording()
       await uploadAudio(audioBlob, playList.value[flowTopicStep.value].name)

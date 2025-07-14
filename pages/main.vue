@@ -11,23 +11,29 @@ const confirm = useConfirm()
 
 const supabase = useSupabaseClient()
 
-const mouseX = ref(0)
-const mouseY = ref(0)
+const colorMode = useColorMode()
+const isLight = ref(false)
+onMounted(() => {
+  isLight.value = (colorMode.value === 'light')
+})
+
+// const mouseX = ref(0)
+// const mouseY = ref(0)
 const userName = ref(userStore.user?.users_name)
 const userId = userStore.user?.users_id
 
-const updateCursor = (e: MouseEvent) => {
-  mouseX.value = e.clientX - 20
-  mouseY.value = e.clientY - 20
-}
+// const updateCursor = (e: MouseEvent) => {
+//   mouseX.value = e.clientX - 20
+//   mouseY.value = e.clientY - 20
+// }
 
-onMounted(() => {
-  window.addEventListener("mousemove", updateCursor)
-})
+// onMounted(() => {
+//   window.addEventListener("mousemove", updateCursor)
+// })
 
-onUnmounted(() => {
-  window.removeEventListener("mousemove", updateCursor)
-})
+// onUnmounted(() => {
+//   window.removeEventListener("mousemove", updateCursor)
+// })
 
 // 功能卡片動畫
 const examCardHover = ref(false)
@@ -79,29 +85,31 @@ onMounted(async() => {
 </script>
 
 <template>
-  <div class="relative min-h-screen min-w-screen overflow-hidden font-sans">
+  <div class="relative min-h-screen min-w-screen overflow-hidden font-sans bg-gradient-to-b from-[#d6e2ef] to-[#9ccafb]">
     <!-- 自訂滑鼠游標 -->
-    <div 
+    <!-- <div 
       class="absolute rounded-full w-12 h-12 bg-gray-400/60 shadow-[0_0_15px_15px_rgba(114,105,105,0.6)] pointer-events-none z-[9999]" 
       :style="{ left: `${mouseX}px`, top: `${mouseY}px` }" 
-    />
+    /> -->
 
     <!-- 主內容 -->
     <div class="flex flex-col h-full">
       
       <!-- 頂部導航列 -->
-      <div class="flex justify-between items-center h-[15%] bg-[#d6e2ef] px-6 shadow-md">
-        <img src="/images/titletext.png" alt="titletext" class="h-[60%]" />
+      <!-- <div class="flex justify-end items-center h-[15%] bg-[#d6e2ef] px-6 shadow-md"> -->
+      <div class="absolute top-0 right-6">
+        <!-- <img src="/images/titletext.png" alt="titletext" class="h-[60%]" /> -->
         <div class="flex items-center space-x-6 pt-3">
           <div class="text-right mt-0.5">
             <p class="text-sm text-gray-600">帳號名稱</p>
-            <p v-if="userStore.user" class="text-lg font-semibold text-gray-800">{{ userStore.user.users_name }}</p>
+            <p v-if="userStore.user" class="text-xl font-semibold text-gray-800">{{ userStore.user.users_name }}</p>
           </div>
           <div class="flex items-center">
             <Button 
-              label="登出" 
+              label="SignOut" 
               severity="secondary" 
               size="normal"
+              icon="pi pi-sign-out"
               @click="logout"
             />
           </div>
@@ -109,12 +117,12 @@ onMounted(async() => {
       </div>
 
       <!-- 主要內容區 -->
-      <div class="flex-1 bg-gradient-to-b from-[#d6e2ef] to-[#9ccafb] p-8">
+      <div class="flex-1 p-8">
         
         <!-- 歡迎訊息 -->
         <div class="text-center mb-8">
-          <h1 class="text-3xl font-bold text-gray-800 mb-2">AI 英語語音測驗系統</h1>
-          <p class="text-gray-600">選擇您想要進行的操作</p>
+          <h1 class="text-3xl font-bold text-gray-800 mb-2">BigByte English Proficiency Test</h1>
+          <p class="text-gray-600">選擇您想要進行的操作<br>Select the action you want to perform</p>
         </div>
 
         <!-- 今日統計 -->
@@ -122,9 +130,9 @@ onMounted(async() => {
           <Card class="bg-white/80 backdrop-blur">
             <template #header>
               <div class="px-6 pt-4">
-                <h3 class="text-xl font-semibold text-gray-700 flex items-center">
+                <h3 class="text-xl font-semibold flex items-center" :class="[isLight ? 'text-gray-700' : 'text-blue-100']">
                   <i class="pi pi-chart-line mr-2"></i>
-                  學習統計
+                  學習統計/Learning Statistics
                 </h3>
               </div>
             </template>
@@ -132,11 +140,11 @@ onMounted(async() => {
               <div class="grid grid-cols-2 gap-4 text-center">
                 <div class="p-4">
                   <p class="text-3xl font-bold text-blue-600">{{ todayStats.completedExams }}</p>
-                  <p class="text-sm text-gray-600 mt-1">完成測驗次數</p>
+                  <p class="text-sm mt-1" :class="[isLight ? 'text-gray-600' : 'text-zinc-300']">完成測驗次數<br>Number of Completed Quizzes</p>
                 </div>
                 <div class="p-4 border-l border-gray-200">
                   <p class="text-3xl font-bold text-green-600">{{ todayStats.averageScore.toFixed(1) }}</p>
-                  <p class="text-sm text-gray-600 mt-1">平均分數</p>
+                  <p class="text-sm mt-1" :class="[isLight ? 'text-gray-600' : 'text-zinc-300']">平均分數<br>Average Score</p>
                 </div>
               </div>
             </template>
@@ -157,8 +165,11 @@ onMounted(async() => {
             <Card class="min-h-full text-white shadow-xl">
               <template #content>
                 <div class="flex flex-col items-center justify-center text-center py-12 min-h-full">
-                  <h2 class="text-2xl font-bold mb-2">進入測驗</h2>
-                  <p class="text-blue-100 mb-6">開始您的英語語音測驗練習</p>
+                  <div class="flex flex-col gap-0 items-center mb-2">
+                    <h2 class="text-2xl font-bold">進入測驗</h2>
+                    <p class="">Begin the Test</p>
+                  </div>
+                  <p class="mb-6" :class="[isLight ? 'text-slate-600' : 'text-zinc-300']">開始您的英語語音測驗練習<br>Start Your English Speaking Test Practice</p>
                 </div>
               </template>
             </Card>
@@ -175,8 +186,11 @@ onMounted(async() => {
             <Card class="h-full bg-gradient-to-br from-green-500 to-green-600 text-white shadow-xl">
               <template #content>
                 <div class="text-center py-12">
-                  <h2 class="text-2xl font-bold mb-2">成績查詢</h2>
-                  <p class="text-green-100 mb-6">查看您的學習進度與成績</p>
+                  <div class="flex flex-col gap-0 items-center mb-2">
+                    <h2 class="text-2xl font-bold">成績查詢</h2>
+                    <p class="">View Grades</p>
+                  </div>
+                  <p class="mb-6" :class="[isLight ? 'text-slate-600' : 'text-zinc-300']">查看您的學習進度與成績<br>View Your Learning Progress and Grades</p>
                 </div>
               </template>
             </Card>
@@ -185,8 +199,11 @@ onMounted(async() => {
       </div>
 
       <!-- 底部裝飾 -->
-      <div class="h-[8%] bg-[#9ccafb] flex items-center justify-center shadow-inner">
+      <!-- <div class="h-[8%] bg-[#9ccafb] flex items-center justify-center shadow-inner">
         <img src="/images/down.png" alt="footer" class="h-full object-contain opacity-80" />
+      </div> -->
+      <div class="flex justify-center w-full pb-2">
+        <div class="flex w-[96%] h-[3px] bg-black justify-center" />
       </div>
     </div>
     <ConfirmDialog class="min-w-[25%]"/>

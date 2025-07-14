@@ -234,8 +234,7 @@
   // 開始錄音
   const startRecording = async () => {
     if (isRecording.value) return
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-    const recorder = new MediaRecorder(stream)
+    const recorder = new MediaRecorder(stream.value)
     audioChunks.value = []
     recorder.ondataavailable = (e) => {
       audioChunks.value.push(e.data)
@@ -404,10 +403,13 @@
     router.push('/endexam')
   }
 
+  const stream = ref()
+
   onMounted(async () => {
     if (interviewerVideo.value !== null) {
       interviewerVideo.value.addEventListener('ended',controlVideo)
     }
+    stream.value = await navigator.mediaDevices.getUserMedia({ audio: true })
   })
 
   //影片撥放停止

@@ -17,10 +17,9 @@
       <!-- 右下區域攝影機 -->
       <div class="bg-gradient-to-b from-[#afd1f5] to-[#9ccafb] p-2">
         <client-only>
-        <FaceDetector
-          v-model:face-count="faceCount"
-          v-model:video-state="videoState"
-          @terminate="endTest"/>
+          <!-- v-model:face-count="faceCount" \n v-model:video-state="videoState" 加入人數偵測時使用-->
+          <FaceDetector
+            @terminate="endTest"/>
         </client-only>
       </div>
     </div>

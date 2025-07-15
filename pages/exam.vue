@@ -60,7 +60,7 @@
   const IntroduceRule = '/video/rule.mp4'
 
   // partA 介紹
-  const IntroducePartA = '/video/partA/PartA_introduce.mp4'
+  const IntroducePartA = '/video/partA/PartA_introduce_remake.mp4'
   const ReadyPartA = '/video/partA/PartA_ready.mp4'
   const PartAImg = '/video/partA/PartA.jpg'
   // partA 前測
@@ -69,16 +69,16 @@
   const PartATest = '/video/partA/PartA_test.mp4'
 
   // partB 介紹
-  const IntroducePartB = '/video/partB/PartB_Introduce.mp4'
+  const IntroducePartB = '/video/partB/PartB_introduce_remake.mp4'
   const ReadyPartB = '/video/partB/PartB_ready.mp4'
   const PartBImg = '/video/partB/PartB.jpg'
   // partB 前測
   const PretestPartB = '/video/partB/PartB_pretest.mp4'
   // partB 正式測驗
-  const PartBTest = '/video/partB/PartB_test.mp4'
+  const PartBTest = '/video/partB/PartB_test_new.mp4'
 
   // partC 介紹
-  const IntroducePartC = '/video/partC/PartC_Introduce.mp4'
+  const IntroducePartC = '/video/partC/PartC_introduce_remake.mp4'
   const ReadyPartC = '/video/partC/PartC_ready.mp4'
   const PartCImg = '/video/partC/PartC.jpg'
   // partC 前測
@@ -216,8 +216,10 @@
     ]) 
   
   // 流程控制
+  // 右上影片播放
   const interviewerVideo = ref<HTMLVideoElement | null>(null)
   const isVideo = ref(false)
+  // 左邊影片播放
   const testvideo = ref<HTMLVideoElement | null>(null)
 
   // 影片播放控制
@@ -341,14 +343,14 @@
       dialogContentChinese.value = '測驗介紹已完成'
       dialogContentEnglish.value = 'The test introduction has been completed.'
     } else if (flowTopicStep.value === 1) {
-      dialogContentChinese.value = `Part A 已完成`
-      dialogContentEnglish.value = `Part A has been completed.`
+      dialogContentChinese.value = `Part A 測驗已完成`
+      dialogContentEnglish.value = `Part A test has been completed.`
     } else if (flowTopicStep.value === 2) {
-      dialogContentChinese.value = `Part B 已完成`
-      dialogContentEnglish.value = `Part B has been completed.`
+      dialogContentChinese.value = `Part B 測驗已完成`
+      dialogContentEnglish.value = `Part B test has been completed.`
     } else {
-      dialogContentChinese.value = `Part C 已完成`
-      dialogContentEnglish.value = `Part C has been completed.`
+      dialogContentChinese.value = `Part C 測驗已完成`
+      dialogContentEnglish.value = `Part C test has been completed.`
     }
     
     if (flowTopicStep.value !== 0) {
@@ -373,6 +375,7 @@
   
   // 播放影片
   const playVideo = () => {
+    videoState.value = "paused"
     const index = playList.value[flowTopicStep.value].content[flowIndexStep.value]
     // 判斷是影片還是相片
     if ( index.exam_image !== '') {
@@ -383,6 +386,7 @@
       examVideo.value = index.exam_video
     }
     introduceVideo.value = index.introduce_video
+    videoState.value = "play"
   }
 
   const controlVideo = async() => {

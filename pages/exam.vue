@@ -60,7 +60,7 @@
   const IntroduceRule = '/video/rule.mp4'
 
   // partA 介紹
-  const IntroducePartA = '/video/partA/PartA_introduce_remake.mp4'
+  const IntroducePartA = '/video/partA/partA_introduce_remake.mp4'
   const ReadyPartA = '/video/partA/PartA_ready.mp4'
   const PartAImg = '/video/partA/PartA.jpg'
   // partA 前測
@@ -69,7 +69,7 @@
   const PartATest = '/video/partA/PartA_test.mp4'
 
   // partB 介紹
-  const IntroducePartB = '/video/partB/PartB_introduce_remake.mp4'
+  const IntroducePartB = '/video/partB/partB_introduce_remake.mp4'
   const ReadyPartB = '/video/partB/PartB_ready.mp4'
   const PartBImg = '/video/partB/PartB.jpg'
   // partB 前測
@@ -78,7 +78,7 @@
   const PartBTest = '/video/partB/PartB_test_new.mp4'
 
   // partC 介紹
-  const IntroducePartC = '/video/partC/PartC_introduce_remake.mp4'
+  const IntroducePartC = '/video/partC/partC_introduce_remake.mp4'
   const ReadyPartC = '/video/partC/PartC_ready.mp4'
   const PartCImg = '/video/partC/PartC.jpg'
   // partC 前測

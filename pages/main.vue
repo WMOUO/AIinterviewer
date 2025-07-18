@@ -202,7 +202,7 @@ onMounted(async() => {
       <!-- <div class="h-[8%] bg-[#9ccafb] flex items-center justify-center shadow-inner">
         <img src="/images/down.png" alt="footer" class="h-full object-contain opacity-80" />
       </div> -->
-      <div class="flex justify-center w-full pb-2">
+      <div class="flex absolute bottom-2 justify-center w-full pb-2">
         <div class="flex w-[96%] h-[3px] bg-black justify-center" />
       </div>
     </div>

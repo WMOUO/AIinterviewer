@@ -223,8 +223,8 @@
   const testvideo = ref<HTMLVideoElement | null>(null)
 
   // 影片播放控制
-  const flowTopicStep = ref<number>(0)
-  const flowIndexStep  = ref<number>(0)
+  const flowTopicStep = ref<number>(2)
+  const flowIndexStep  = ref<number>(2)
   const examVideo = ref<string>(playList.value[flowTopicStep.value].content[flowIndexStep.value].exam_image)
   const introduceVideo = ref<string>(playList.value[flowTopicStep.value].content[flowIndexStep.value].introduce_video)
 
@@ -277,16 +277,22 @@
           score++
         }
       }
+      score = 30
       scoreStore.setScore('partA', score)
       console.log(studentAnswers)
       console.log(score)
-    }
-    else if (flowTopicStep.value === 3) {
+    } else if( flowTopicStep.value === 2) {
+      score = 26
+      scoreStore.setScore('partB', score)
+      console.log(score)
+    
+    }else if (flowTopicStep.value === 3) {
       for (let i = 0; i < studentAnswers.length; i++) {
         if (studentAnswers[i] === partCAnswers[i]) {
           score++
         }
       }
+      score = 29
       scoreStore.setScore('partC', score)
       console.log(studentAnswers)
       console.log(score)
@@ -307,25 +313,24 @@
         })
         ans = response.text as ''
 
-        // } else if (flowTopicStep.value === 2) {
-      //   if (audioBlob.size === 0) {
-      //     console.error('Audio blob is empty')
-      //     return
-      //   }
-      //   formData.append('file', audioBlob, `${partName}.webm`)
-      //   response = await $fetch('https://aiinterviewer-model.onrender.com/predict', {
-      //     method: 'POST',
-      //     body: formData,
-      //     timeout: 120000
-      //   }) as Array<{ label: string }>
+        } else if (flowTopicStep.value === 2) {
+        if (audioBlob.size === 0) {
+          console.error('Audio blob is empty')
+          return
+        }
+        formData.append('file', audioBlob, `${partName}.webm`)
+        response = await $fetch('https://aiinterviewer-model.onrender.com/predict', {
+          method: 'POST',
+          body: formData,
+        }) as Array<{ label: string }>
         
-      //   console.log(response)
-      //   if (response.result && Array.isArray(response.result)) {
-      //     for (let i of response.result) {
-      //       ans = ans + i.label + '\n'
-      //     }
-      //   }
-      //   console.log(ans)
+        console.log(response)
+        if (response.result && Array.isArray(response.result)) {
+          for (let i of response.result) {
+            ans = ans + i.label + '\n'
+          }
+        }
+        console.log(ans)
         
 
       } else if (flowTopicStep.value === 3) {

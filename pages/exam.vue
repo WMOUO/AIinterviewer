@@ -7,20 +7,19 @@
     </div>
 
     <!-- 右邊區域 -->
-    <div class="flex flex-col w-[50%] h-screen">
+    <div class="flex flex-col w-[50%] h-screen bg-gradient-to-b from-[#dfe4ea] to-[#9ccafb]">
 
       <!-- 右上區域AI -->
-      <div class="bg-gradient-to-b from-[#dfe4ea] to-[#afd1f5] p-2 h-[50%] item-center justify-center overflow-hidden">
+      <div class="p-2 h-[50%] item-center justify-center overflow-hidden">
         <video ref="interviewerVideo" :src="introduceVideo" autoplay class="w-full" />
       </div>
 
       <!-- 右下區域攝影機 -->
-      <div class="bg-gradient-to-b from-[#afd1f5] to-[#9ccafb] p-2">
+      <div class="p-2">
         <client-only>
-        <FaceDetector
-          v-model:face-count="faceCount"
-          v-model:video-state="videoState"
-          @terminate="endTest"/>
+          <!-- v-model:face-count="faceCount" \n v-model:video-state="videoState" 加入人數偵測時使用-->
+          <FaceDetector
+            @terminate="endTest"/>
         </client-only>
       </div>
     </div>
@@ -61,7 +60,7 @@
   const IntroduceRule = '/video/rule.mp4'
 
   // partA 介紹
-  const IntroducePartA = '/video/partA/PartA_introduce.mp4'
+  const IntroducePartA = '/video/partA/partA_introduce_remake.mp4'
   const ReadyPartA = '/video/partA/PartA_ready.mp4'
   const PartAImg = '/video/partA/PartA.jpg'
   // partA 前測
@@ -70,22 +69,22 @@
   const PartATest = '/video/partA/PartA_test.mp4'
 
   // partB 介紹
-  const IntroducePartB = '/video/partB/PartB_Introduce.mp4'
+  const IntroducePartB = '/video/partB/partB_introduce_remake.mp4'
   const ReadyPartB = '/video/partB/PartB_ready.mp4'
   const PartBImg = '/video/partB/PartB.jpg'
   // partB 前測
   const PretestPartB = '/video/partB/PartB_pretest.mp4'
   // partB 正式測驗
-  const PartBTest = '/video/partB/PartB_test.mp4'
+  const PartBTest = '/video/partB/PartB_test_new.mp4'
 
   // partC 介紹
-  const IntroducePartC = '/video/partC/PartC_Introduce.mp4'
+  const IntroducePartC = '/video/partC/partC_introduce_remake.mp4'
   const ReadyPartC = '/video/partC/PartC_ready.mp4'
   const PartCImg = '/video/partC/PartC.jpg'
   // partC 前測
   const PretestPartC = '/video/partC/PartC_pretest.mp4'
   // partC 正式測驗
-  const PartCTest = '/video/partC/PartC_test.mp4'
+  const PartCTest = '/video/partC/PartC_test_remake.mp4'
 
   // 測驗流程
   const playList = ref([{
@@ -217,8 +216,10 @@
     ]) 
   
   // 流程控制
+  // 右上影片播放
   const interviewerVideo = ref<HTMLVideoElement | null>(null)
   const isVideo = ref(false)
+  // 左邊影片播放
   const testvideo = ref<HTMLVideoElement | null>(null)
 
   // 影片播放控制
@@ -235,8 +236,7 @@
   // 開始錄音
   const startRecording = async () => {
     if (isRecording.value) return
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-    const recorder = new MediaRecorder(stream)
+    const recorder = new MediaRecorder(stream.value)
     audioChunks.value = []
     recorder.ondataavailable = (e) => {
       audioChunks.value.push(e.data)
@@ -265,7 +265,7 @@
   const scoreStore = useScoreStore()
   const checkAns = (studentAns:string) => {
     const partAAnswers = ['t', 'u', 'a', 'g', 'j', 'p', 'c', 'w', 'm', 'f', 'i', 'x', 'v', 'r', 'e', 'h', 'm', 'o', 'l', 'y', 'q', 'd', 's', 'b', 'z', 'n', 'v', 'f', 'q', 'i']
-    const partCAnswers = ['why', 'hot', 'black', 'rounter', 'left', 'chat', 'food', 'paper', 'cos', 'appear', 'and', 'egg', 'have', 'rain', 'by', 'vote', 'is', 'late', 'under', 'focus', 'next', 'because', 'equity', 'stock', 'case', 'of', 'profit', 'file', 'tablet', 'agent']
+    const partCAnswers = ['what', 'hot', 'black', 'count', 'left', 'chat', 'food', 'paper', 'bubble', 'appear', 'and', 'egg', 'have', 'rain', 'watch', 'vote', 'control', 'later', 'under', 'focus', 'next', 'because', 'fair', 'stock', 'case', 'find', 'profit', 'day', 'table', 'agent']
     const studentAnswers = studentAns
       .split('\n')
       .map((ans:string) => ans.trim())
@@ -296,30 +296,51 @@
   // call gemini語音轉文字api
   const uploadAudio = async (audioBlob: Blob, partName: string) => {
     const formData = new FormData()
-    formData.append('audio', audioBlob, `${partName}.webm`)
-    if (flowTopicStep.value === 1){
-      try {
-        const response = await $fetch('/api/translateLetter', {
+    try{
+      let response = null
+      let ans: string = ''
+      if (flowTopicStep.value === 1) {
+        formData.append('audio', audioBlob, `${partName}.webm`)
+        response = await $fetch('/api/translateLetter', {
           method: 'POST',
           body: formData
         })
-        await checkAns(response.text as '')
-        // 未加入錯誤處理 音檔無內容需跳錯誤
-        console.log(`Audio uploaded for ${partName}`)
-      } catch (err) {
-        console.error('Upload error', err)
-      }
-    } else if(flowTopicStep.value === 3) {
-      try {
-        const response = await $fetch('/api/translateWord', {
+        ans = response.text as ''
+
+        // } else if (flowTopicStep.value === 2) {
+      //   if (audioBlob.size === 0) {
+      //     console.error('Audio blob is empty')
+      //     return
+      //   }
+      //   formData.append('file', audioBlob, `${partName}.webm`)
+      //   response = await $fetch('https://aiinterviewer-model.onrender.com/predict', {
+      //     method: 'POST',
+      //     body: formData,
+      //     timeout: 120000
+      //   }) as Array<{ label: string }>
+        
+      //   console.log(response)
+      //   if (response.result && Array.isArray(response.result)) {
+      //     for (let i of response.result) {
+      //       ans = ans + i.label + '\n'
+      //     }
+      //   }
+      //   console.log(ans)
+        
+
+      } else if (flowTopicStep.value === 3) {
+        formData.append('audio', audioBlob, `${partName}.webm`)
+        response = await $fetch('/api/translateWord', {
           method: 'POST',
           body: formData
         })
-        await checkAns(response.text as '')
-        console.log(`Audio uploaded for ${partName}`)
-      } catch (err) {
-        console.error('Upload error', err)
+        ans = response.text as ''
       }
+      await checkAns(ans as '')
+      // 未加入錯誤處理 音檔無內容需跳錯誤
+      console.log(`Audio uploaded for ${partName}`)
+    }catch (err) {
+      console.error('Upload error', err)
     }
   }
 
@@ -343,14 +364,14 @@
       dialogContentChinese.value = '測驗介紹已完成'
       dialogContentEnglish.value = 'The test introduction has been completed.'
     } else if (flowTopicStep.value === 1) {
-      dialogContentChinese.value = `Part A 已完成`
-      dialogContentEnglish.value = `Part A has been completed.`
+      dialogContentChinese.value = `Part A 測驗已完成`
+      dialogContentEnglish.value = `Part A test has been completed.`
     } else if (flowTopicStep.value === 2) {
-      dialogContentChinese.value = `Part B 已完成`
-      dialogContentEnglish.value = `Part B has been completed.`
+      dialogContentChinese.value = `Part B 測驗已完成`
+      dialogContentEnglish.value = `Part B test has been completed.`
     } else {
-      dialogContentChinese.value = `Part C 已完成`
-      dialogContentEnglish.value = `Part C has been completed.`
+      dialogContentChinese.value = `Part C 測驗已完成`
+      dialogContentEnglish.value = `Part C test has been completed.`
     }
     
     if (flowTopicStep.value !== 0) {
@@ -375,6 +396,7 @@
   
   // 播放影片
   const playVideo = () => {
+    videoState.value = "paused"
     const index = playList.value[flowTopicStep.value].content[flowIndexStep.value]
     // 判斷是影片還是相片
     if ( index.exam_image !== '') {
@@ -385,6 +407,7 @@
       examVideo.value = index.exam_video
     }
     introduceVideo.value = index.introduce_video
+    videoState.value = "play"
   }
 
   const controlVideo = async() => {
@@ -405,10 +428,13 @@
     router.push('/endexam')
   }
 
+  const stream = ref()
+
   onMounted(async () => {
     if (interviewerVideo.value !== null) {
       interviewerVideo.value.addEventListener('ended',controlVideo)
     }
+    stream.value = await navigator.mediaDevices.getUserMedia({ audio: true })
   })
 
   //影片撥放停止

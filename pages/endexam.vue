@@ -47,8 +47,11 @@ const getDate = () => {
 const endexam = async() => {
   const date = await getDate()
   const { error } = await supabase.from('scores').insert({scores_score: totalScore.value, scores_date: date, users_id: userStore.user?.users_id })
-  router.push('/main')
 }
+
+onMounted(() => {
+  endexam()
+})
 </script>
 
 <template>
@@ -99,7 +102,7 @@ const endexam = async() => {
         </div>
         
         <div class="flex min-w-full items-center justify-center mt-10">
-            <Button label="Finish Test" @click="endexam()">
+            <Button label="Finish Test" @click="router.push('/main')">
             </Button>
         </div>
       </div>

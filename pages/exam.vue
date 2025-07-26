@@ -280,8 +280,9 @@
       scoreStore.setScore('partA', score)
       console.log(studentAnswers)
       console.log(score)
-    }
-    else if (flowTopicStep.value === 3) {
+    } else if (flowTopicStep.value === 2) {
+      scoreStore.setScore('partB', 26)
+    } else if (flowTopicStep.value === 3) {
       for (let i = 0; i < studentAnswers.length; i++) {
         if (studentAnswers[i] === partCAnswers[i]) {
           score++
